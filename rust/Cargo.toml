@@ -1,0 +1,27 @@
+[package]
+name = "html5ever4j"
+version = "0.1.0"
+authors = ["Sebastien Wagener <sebastien.wagener@gmail.com>"]
+
+[lib]
+name = "html5ever4j"
+crate-type = ["dylib"]
+
+[dependencies]
+html5ever = "*"
+string_cache = "*"
+tendril = "*"
+
+# required for JNI
+libc = "0.2.11"
+jni-sys = "0.1.0"
+
+[profile.release]
+opt-level = 3
+debug = true
+rpath = false
+lto = false
+debug-assertions = false
+codegen-units = 1
+
+
