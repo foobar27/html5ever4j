@@ -6,6 +6,12 @@ use std::marker::PhantomData;
 
 use helper::{to_ptr,to_string};
 
+// TODO verify exception ocurred???
+macro_rules! jni {
+    ($jre:expr, $method_name:ident, $( $arg:expr ),*) =>
+        (((**$jre).$method_name)($jre, $( $arg ),*);)
+}
+
 fn mangled_class_name(package: &str, name: &str) -> String {
     let mut result: String = package.chars()
         .map(|c| if c=='.' {'/'} else {c})
@@ -30,23 +36,23 @@ pub unsafe fn free_struct<T>(ptr: jlong) {
 
 // TODO create struct JString
 pub unsafe fn jstring_to_string(jre: *mut JNIEnv, s: jstring) -> String {
-    let chars = ((**jre).GetStringUTFChars)(jre, s, ptr::null_mut());
+    let chars = jni!(jre, GetStringUTFChars, s, ptr::null_mut());
     let result = to_string(chars);
-    ((**jre).ReleaseStringUTFChars)(jre, s, chars);
+    jni!(jre, ReleaseStringUTFChars, s, chars); 
     return result
 }
 
 pub unsafe fn string_to_jstring(jre: *mut JNIEnv, s: String) -> jstring {
-    return ((**jre).NewStringUTF)(jre, to_ptr(s));
+    return jni!(jre, NewStringUTF, to_ptr(s));
 }
 
 pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: &Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
-    let jni_result = ((**jre).NewObjectArray)(jre, items.len() as i32, item_class.class, ptr::null_mut());
+    let jni_result = jni!(jre, NewObjectArray, items.len() as i32, item_class.class, ptr::null_mut());
     if jni_result.is_null() {
         return Err(())
     }
     for (index, item) in items.iter().enumerate() {
-        ((**jre).SetObjectArrayElement)(jre, jni_result, index as i32, *item);
+        jni!(jre, SetObjectArrayElement, jni_result, index as i32, *item);
     }
     return Ok(jni_result);
 }
@@ -94,27 +100,26 @@ impl JObject {
 
     // TODO make generic
     unsafe fn get_boolean_field(&self, jre: *mut JNIEnv, id: jfieldID) -> bool {
-        return ((**jre).GetBooleanField)(jre, self.object, id) > 0
+        return jni!(jre, GetBooleanField, self.object, id) > 0
     }
 
     // TODO make generic
     unsafe fn get_object_field(&self, jre: *mut JNIEnv, id: jfieldID) -> JObject {
-        return JObject::new_owned(((**jre).GetObjectField)(jre, self.object, id))
+        return JObject::new_owned(jni!(jre, GetObjectField, self.object, id))
     }
 
     // TODO make generic: .call_method<JObject>(id)?
     // TODO allow parameters
     pub unsafe fn call_object_method(&self, jre: *mut JNIEnv, method_id: jmethodID) -> JObject {
         return JObject::new_owned(
-            ((**jre).CallObjectMethod)(
-                jre,
-                self.object,
-                method_id));
+            jni!(jre, CallObjectMethod,
+                 self.object,
+                 method_id));
     }
 
     // TODO allow parameters
     pub unsafe fn call_int_method(&self, jre: *mut JNIEnv, id: jmethodID) -> jint {
-        return ((**jre).CallIntMethod)(jre, self.object, id);
+        return jni!(jre, CallIntMethod, self.object, id);
     }
 
 }
@@ -135,7 +140,7 @@ impl JClass {
     }
 
     pub unsafe fn create_global_ref(&self, jre: *mut JNIEnv) -> Result<JClass, ()> {
-        let class = ((**jre).NewGlobalRef)(jre, self.class);
+        let class = jni!(jre, NewGlobalRef, self.class);
         if class.is_null() {
             return Err(())
         }
@@ -150,7 +155,7 @@ impl JClass {
     }
     
     pub unsafe fn load(jre: *mut JNIEnv, package: &str, name: &str) -> Result<JClass, ()> {
-        let class = ((**jre).FindClass)(jre, to_ptr(mangled_class_name(package, name)));
+        let class = jni!(jre, FindClass, to_ptr(mangled_class_name(package, name)));
         if class.is_null() {
             return Err(())
         }
@@ -168,39 +173,35 @@ impl JClass {
     }
 
     unsafe fn get_field_id(&self, jre: *mut JNIEnv, name: &str, sig: &str) -> Result<jfieldID, ()> {
-        let result = ((**jre).GetFieldID)(
-            jre,
-            self.class,
-            to_ptr(name.to_string()),
-            to_ptr(sig.to_string()));
+        let result = jni!(jre, GetFieldID,
+                          self.class,
+                          to_ptr(name.to_string()),
+                          to_ptr(sig.to_string()));
         return jfield_id_result(result);
     }
    
     pub unsafe fn get_method_id(&self, jre: *mut JNIEnv, name: String, signature: String) -> Result<jmethodID, ()> {
-        let result = ((**jre).GetMethodID)(
-            jre,
-            self.class,
-            to_ptr(name),
-            to_ptr(signature));
+        let result = jni!(jre, GetMethodID,
+                          self.class,
+                          to_ptr(name),
+                          to_ptr(signature));
         return jmethod_id_result(result);
     }
     
     pub unsafe fn get_static_field_id(&self, jre: *mut JNIEnv, name: &str, signature: String) -> Result<jfieldID, ()>{
-        let result = ((**jre).GetStaticFieldID)(
-            jre,
-            self.class,
-            to_ptr(name.to_owned()),
-            to_ptr(signature.to_owned()));
+        let result = jni!(jre, GetStaticFieldID,
+                          self.class,
+                          to_ptr(name.to_owned()),
+                          to_ptr(signature.to_owned()));
         return jfield_id_result(result)
     }
 
     // TODO make generic
     pub unsafe fn get_static_object_field(&self, jre: *mut JNIEnv, id: jfieldID) -> JObject {
         return JObject::new_owned(
-            ((**jre).GetStaticObjectField)(
-                jre,
-                self.class,
-                id))
+            jni!(jre, GetStaticObjectField, 
+                 self.class,
+                 id))
     }
 
 }

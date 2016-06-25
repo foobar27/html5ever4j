@@ -47,33 +47,30 @@ impl Callback for JavaCallbackObject {
     
     fn set_doc_type(&self, name: String, public: String, system: String) {
         unsafe {
-            ((**self.jre).CallVoidMethod)(
-                self.jre,
-                self.object.object,
-                self.class.set_doc_type_method,
-                string_to_jstring(self.jre, name),
-                string_to_jstring(self.jre, public),
-                string_to_jstring(self.jre, system));
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.set_doc_type_method,
+                 string_to_jstring(self.jre, name),
+                 string_to_jstring(self.jre, public),
+                 string_to_jstring(self.jre, system));
         }
     }
 
     fn create_text(&self, text: String) {
         unsafe {
-            ((**self.jre).CallVoidMethod)(
-                self.jre,
-                self.object.object,
-                self.class.create_text_method,
-                string_to_jstring(self.jre, text));
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_text_method,
+                 string_to_jstring(self.jre, text));
         }
     }
 
     fn create_comment(&self, comment: String) {
         unsafe {
-            ((**self.jre).CallVoidMethod)(
-                self.jre,
-                self.object.object,
-                self.class.create_comment_method,
-                string_to_jstring(self.jre, comment));
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_comment_method,
+                 string_to_jstring(self.jre, comment));
                                                       }
     }
 
@@ -85,13 +82,12 @@ impl Callback for JavaCallbackObject {
                 flat_attributes.push(string_to_jstring(self.jre, a.key));
                 flat_attributes.push(string_to_jstring(self.jre, a.value));
             }
-            ((**self.jre).CallVoidMethod)(
-                self.jre,
-                self.object.object,
-                self.class.create_normal_element_method,
-                string_to_jstring(self.jre, ns),
-                string_to_jstring(self.jre, tag_name),
-                jobject_vec_to_jobjectarray(self.jre, &flat_attributes, self.class.string_class.clone()));
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_normal_element_method,
+                 string_to_jstring(self.jre, ns),
+                 string_to_jstring(self.jre, tag_name),
+                 jobject_vec_to_jobjectarray(self.jre, &flat_attributes, self.class.string_class.clone()));
         }
     }
     

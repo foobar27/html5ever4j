@@ -6,9 +6,10 @@ extern crate html5ever;
 extern crate libc;
 extern crate jni_sys;
 
+#[macro_use]
+mod jni;
 mod algorithms;
 mod options;
-mod jni;
 mod callbacks;
 mod helper;
 
