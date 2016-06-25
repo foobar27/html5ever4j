@@ -36,7 +36,7 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createConte
 #[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyContext(
-jre: *mut JNIEnv, _: jclass, ptr: jlong) {
+_: *mut JNIEnv, _: jclass, ptr: jlong) {
     free_struct::<Context>(ptr);
 }
 
@@ -97,7 +97,7 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createParse
 #[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyParseOptions(
-    jre: *mut JNIEnv, _: jclass, ptr: jlong) {
+    _: *mut JNIEnv, _: jclass, ptr: jlong) {
     ParseOptionsWrapper::destroy_object_jlong(ptr);
 }
 
@@ -119,7 +119,7 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createSeria
 #[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroySerializeOptions(
-    jre: *mut JNIEnv, class: jclass, ptr: jlong) {
+    _: *mut JNIEnv, _: jclass, ptr: jlong) {
     SerializeOptionsWrapper::destroy_object_jlong(ptr);
 }
 
