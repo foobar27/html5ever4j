@@ -1,6 +1,6 @@
 use std::ptr;
 use std::rc::Rc;
-use jni_sys::{jlong,jint,jstring,jclass,jobject,jmethodID,jfieldID,JNIEnv};
+use jni_sys::{jlong,jint,jstring,jclass,jobject,jmethodID,jfieldID,jobjectArray,JNIEnv};
 use std::collections::HashMap;
 use std::marker::PhantomData;
 
@@ -40,6 +40,17 @@ pub unsafe fn string_to_jstring(jre: *mut JNIEnv, s: String) -> jstring {
     return ((**jre).NewStringUTF)(jre, to_ptr(s));
 }
 
+pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
+    let jni_result = ((**jre).NewObjectArray)(jre, items.len() as i32, item_class.class, ptr::null_mut());
+    if jni_result.is_null() {
+        return Err(())
+    }
+    for (index, item) in items.iter().enumerate() {
+        ((**jre).SetObjectArrayElement)(jre, jni_result, index as i32, *item);
+    }
+    return Ok(jni_result);
+}
+
 // TODO reset exceptions
 fn jfield_id_result(id: jfieldID) -> Result<jfieldID, ()> {
     if id.is_null() {
@@ -60,7 +71,7 @@ fn jmethod_id_result(id: jmethodID) -> Result<jmethodID, ()> {
 /// A local reference to a java object.
 #[derive(Debug, Clone)]
 pub struct JObject {
-    object: jobject,
+    pub object: jobject, // TODO make private if varargs is properly supported
     owned: bool
 }
 
@@ -101,10 +112,10 @@ impl JObject {
                 method_id));
     }
 
+    // TODO allow parameters
     pub unsafe fn call_int_method(&self, jre: *mut JNIEnv, id: jmethodID) -> jint {
         return ((**jre).CallIntMethod)(jre, self.object, id);
     }
-
 
 }
 
@@ -122,6 +133,14 @@ impl JClass {
             owned: true,
         }
     }
+
+    pub unsafe fn create_global_ref(&self, jre: *mut JNIEnv) -> Result<JClass, ()> {
+        let class = ((**jre).NewGlobalRef)(jre, self.class);
+        if class.is_null() {
+            return Err(())
+        }
+        return Ok(JClass::new_owned(class))
+    }    
 
     pub fn type_signature(package: &str, name: &str) -> String {
         let mut result = String::from("L");

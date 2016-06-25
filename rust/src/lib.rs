@@ -9,6 +9,7 @@ extern crate jni_sys;
 mod algorithms;
 mod options;
 mod jni;
+mod callbacks;
 mod helper;
 
 use jni_sys::{jlong,jstring,jobject,jclass,JNIEnv};
