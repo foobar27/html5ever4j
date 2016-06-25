@@ -1,9 +1,6 @@
 use std::ptr;
 use std::rc::Rc;
-use std::result;
-use std::ptr::{drop_in_place,copy};
-use jni_sys::{jlong,jboolean,jint,jstring,jclass,jobject,jmethodID,jfieldID,JNIEnv};
-use libc::c_char;
+use jni_sys::{jlong,jint,jstring,jclass,jobject,jmethodID,jfieldID,JNIEnv};
 use std::collections::HashMap;
 use std::marker::PhantomData;
 
@@ -111,21 +108,8 @@ impl JObject {
 
 }
 
-// impl Drop for JObject {
-
-//     fn drop(&mut self) {
-//         unsafe {
-//             if self.owned {
-//                 ((**jre).DeleteLocalRef)(jre, self.object);
-//             }
-//         }
-//     }
-
-// }
-
 #[derive(Debug, Clone)]
 pub struct JClass {
-    //jre: *mut JNIEnv,
     class: jclass,
     owned: bool,
 }
@@ -134,7 +118,6 @@ impl JClass {
 
     pub fn new_owned(class: jclass) -> JClass {
         return JClass {
-            //jre: jre,
             class: class,
             owned: true,
         }
@@ -153,7 +136,6 @@ impl JClass {
             return Err(())
         }
         return Ok(JClass {
-//            jre: jre,
             class: class,
             owned: true
         })
@@ -202,40 +184,7 @@ impl JClass {
                 id))
     }
 
-    // // TODO should return some kind of reference?
-    // // TODO needed?
-    // pub fn as_object(&self) -> JObject {
-    //     return JObject::new_borrowed(self.jre, self.class as jobject);
-    // }
-
-    // pub unsafe fn get_object_class(&self) -> JObject {
-    //     return JObject::new_owned(self.jre, ((**self.jre).GetObjectClass)(self.jre, self.class));
-    // }
-    
-    // pub unsafe fn get_name(&self) -> Result<String, ()> {
-    //     return Ok(jstring_to_string(
-    //         self.jre,
-    //         self.get_object_class()
-    //             .call_object_method(
-    //                 try!(self.get_method_id(
-    //                     "getName".to_string(),
-    //                     "()Ljava/lang/String;".to_string())))
-    //             .object));
-    // }
-
 }
-
-// impl Drop for JClass {
-
-//     fn drop(&mut self) {
-//         unsafe {
-//             if self.owned {
-//                 ((**self.jre).DeleteLocalRef)(self.jre, self.class);
-//             }
-//         }
-//     }
-
-// }
 
 pub struct FieldMetaData {
     field_id: jfieldID
@@ -274,32 +223,8 @@ impl FieldGetter<bool> for BoolField {
 
 pub trait ObjectWrapper<Object> : Sized {
 
-    // unsafe fn create_wrapper(class: JClass, context: &Context) -> Result<Wrapper, ()>;
-
-    // unsafe fn create_wrapper_jlong(jre: *mut JNIEnv, class: jclass, context: jlong) -> jlong {
-    //     let ref context = *(context as *mut Context);
-    //     return match Wrapper::create_wrapper(JClass::new_borrowed(jre, class),
-    //                                          &context) {
-    //         Ok(b) => box_to_jlong(b),
-    //         Err(()) => 0,
-    //     }
-    // }
-
-    // unsafe fn destroy_wrapper_jlong(ptr: jlong) {
-    //     free_struct::<Wrapper>(ptr);
-    // }
-
     unsafe fn create_object(&self, jre: *mut JNIEnv, object: JObject) -> Result<Object, ()> where Self: Sized;
     
-    // unsafe fn create_object_jlong(jre: *mut JNIEnv, wrapper: jlong, object: jobject) -> jlong {
-    //     let ref wrapper = *(wrapper as *mut Wrapper);
-    //     let o = Wrapper::create_object(wrapper, JObject::new_borrowed(jre, object));
-    //     return match o {
-    //         Ok(o) => return box_to_jlong(Box::new(o)),
-    //         Err(()) => 0
-    //     }
-    // }
-
     unsafe fn destroy_object_jlong(ptr: jlong) where Self: Sized {
         free_struct::<Object>(ptr);
     }
@@ -316,7 +241,6 @@ pub struct EnumWrapper<T: Clone> {
 impl<T: Clone> EnumWrapper<T> {
    
     pub unsafe fn new(jre: *mut JNIEnv, enum_class: JClass, fqcn: String, mapping: &HashMap<&str, T>) -> Result<EnumWrapper<T>, ()>{
-        //let fqcn = try!(enum_class.get_name());
         let type_sig = format!("L{};", fqcn);
         let ordinal_method_id = try!(enum_class.get_method_id(jre, 
             "ordinal".to_string(),
@@ -334,6 +258,7 @@ impl<T: Clone> EnumWrapper<T> {
             id_map: id_map
         })
     }
+    
     pub unsafe fn load(jre: *mut JNIEnv, package: &str, name: &str, mapping: &HashMap<&str, T>) -> Result<EnumWrapper<T>, ()> {
         return EnumWrapper::<T>::new(
             jre,
@@ -341,6 +266,7 @@ impl<T: Clone> EnumWrapper<T> {
             mangled_class_name(package, name),
             mapping);
     }
+    
     pub unsafe fn cast(&self, jre: *mut JNIEnv, object: JObject) -> Result<T, ()> {
         let id = object.call_int_method(jre, self.ordinal_method_id);
         // TODO simplify
@@ -383,7 +309,6 @@ impl<T: Clone> FieldGetter<T> for EnumField<T> {
 
 // TODO automatically deduce Object from ObjectWrapper (type argument)
 pub struct ObjectField<Object, Wrapper: ObjectWrapper<Object>> {
-//pub struct ObjectField<Wrapper: ObjectWrapper> {
     meta_data: FieldMetaData,
     wrapper: Rc<Wrapper>,
     phantom: PhantomData<Object>

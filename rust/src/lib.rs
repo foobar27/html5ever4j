@@ -1,5 +1,4 @@
 // #![crate_type = "dylib"]
-//#![feature(const_fn)]
 
 extern crate tendril;
 extern crate html5ever;
@@ -9,40 +8,19 @@ extern crate jni_sys;
 
 mod algorithms;
 mod options;
-mod native;
 mod jni;
 mod helper;
 
-use std::result;
-use std::str;
-use std::mem;
-use std::ptr;
-use std::option;
-use std::ptr::{drop_in_place,copy};
-use std::fmt;
-use std::fmt::{Formatter,Display};
-use jni_sys::{jlong,jboolean,jstring,jfieldID,jobject,jclass,JNIEnv};
-use libc::c_char;
-use std::ffi::{CStr,CString};
-use std::collections::HashMap;
+use jni_sys::{jlong,jstring,jobject,jclass,JNIEnv};
 
 use html5ever::driver::ParseOpts;
-use html5ever::serialize::{SerializeOpts,TraversalScope};
+use html5ever::serialize::SerializeOpts;
 use html5ever::tokenizer::TokenizerOpts;
 use html5ever::tree_builder::TreeBuilderOpts;
-use html5ever::tree_builder::interface::QuirksMode;
 
-use jni::{FieldGetter,BoolField,EnumField,JObject,JClass,EnumWrapper,ObjectWrapper, box_to_jlong, free_struct, jstring_to_string, string_to_jstring};
+use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring};
 
 use options::{Context,TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,FromContext,DebugString};
-
-
-// #[cfg(test)]
-// mod tests {
-//     #[test]
-//     fn it_works() {
-//     }
-// }
 
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createContext(

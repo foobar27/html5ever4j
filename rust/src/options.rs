@@ -1,15 +1,6 @@
-use std::result;
 use std::rc::Rc;
 use std::str;
-use std::mem;
-use std::ptr;
-use std::option;
-use std::ptr::{drop_in_place,copy};
-use std::fmt;
-use std::fmt::{Formatter,Display};
-use jni_sys::{jlong,jboolean,jstring,jfieldID,jobject,jclass,JNIEnv};
-use libc::c_char;
-use std::ffi::{CStr,CString};
+use jni_sys::{jlong,jobject,JNIEnv};
 use std::collections::HashMap;
 
 use html5ever::driver::ParseOpts;
@@ -18,9 +9,8 @@ use html5ever::tokenizer::TokenizerOpts;
 use html5ever::tree_builder::TreeBuilderOpts;
 use html5ever::tree_builder::interface::QuirksMode;
 
-use algorithms;
 use jni;
-use jni::{FieldGetter,BoolField,EnumField,JObject,JClass,EnumWrapper,ObjectWrapper, box_to_jlong, free_struct, jstring_to_string, string_to_jstring};
+use jni::{FieldGetter,JObject,JClass,EnumWrapper,ObjectWrapper, box_to_jlong};
 
 static PACKAGE: &'static str = "com.github.foobar27.html5ever4j";
 
@@ -70,7 +60,6 @@ pub trait FromContext<Object> {
 
 pub trait DebugString {
     fn debug_string(&self) -> String;
-    //fn fmt(&self, f: &mut Formatter) -> fmt::Result;
 }
 
 impl DebugString for TokenizerOpts {
@@ -79,12 +68,6 @@ impl DebugString for TokenizerOpts {
                        self.exact_errors,
                        self.discard_bom);
     }
-    // fn fmt(&self, fmt: &mut Formatter) -> fmt::Result {
-    //     fmt.debug_struct("TokenizerOpts")
-    //         .field("exact_errors", &self.exact_errors)
-    //         .field("discard_bom", &self.discard_bom)
-    //         .finish()
-    // }
 }
 
 

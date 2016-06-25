@@ -1,5 +1,4 @@
 use std::str;
-use std::ptr;
 use std::mem;
 
 use std::ffi::{CStr,CString};
