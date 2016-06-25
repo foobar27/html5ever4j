@@ -22,6 +22,7 @@ use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring};
 
 use options::{Context,TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,FromContext,DebugString};
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createContext(
     jre: *mut JNIEnv, _: jclass) -> jlong {
@@ -32,12 +33,14 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createConte
     }
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyContext(
 jre: *mut JNIEnv, _: jclass, ptr: jlong) {
     free_struct::<Context>(ptr);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createTokenizerOptions(
     jre: *mut JNIEnv,
@@ -47,12 +50,14 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createToken
     return TokenizerOptionsWrapper::from_context_jlong(jre, context, object);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyTokenizerOptions(
     _: *mut JNIEnv, _: jclass, ptr: jlong) {
     TokenizerOptionsWrapper::destroy_object_jlong(ptr);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_tokenizerOptionsToString(
     jre: *mut JNIEnv, _: jclass, options: jlong) -> jstring {
@@ -60,18 +65,21 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_tokenizerOp
     return string_to_jstring(jre, options.debug_string());
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createTreeBuilderOptions(
     jre: *mut JNIEnv, _: jclass, context: jlong, object: jobject) -> jlong {
     return TreeBuilderOptionsWrapper::from_context_jlong(jre, context, object);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyTreeBuilderOptions(
     _: *mut JNIEnv, _: jclass, ptr: jlong) {
     TreeBuilderOptionsWrapper::destroy_object_jlong(ptr);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_treeBuilderOptionsToString(
     jre: *mut JNIEnv, _: jclass, options: jlong) -> jstring {
@@ -79,18 +87,21 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_treeBuilder
     return string_to_jstring(jre, options.debug_string());
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createParseOptions(
     jre: *mut JNIEnv, _: jclass, context: jlong, object: jobject) -> jlong {
     return ParseOptionsWrapper::from_context_jlong(jre, context, object);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroyParseOptions(
     jre: *mut JNIEnv, _: jclass, ptr: jlong) {
     ParseOptionsWrapper::destroy_object_jlong(ptr);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_parseOptionsToString(
     jre: *mut JNIEnv, _: jclass, options: jlong) -> jstring {
@@ -98,18 +109,21 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_parseOption
     return string_to_jstring(jre, options.debug_string());
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createSerializeOptions(
     jre: *mut JNIEnv, _: jclass, context: jlong, object: jobject) -> jlong {
     return SerializeOptionsWrapper::from_context_jlong(jre, context, object);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_destroySerializeOptions(
     jre: *mut JNIEnv, class: jclass, ptr: jlong) {
     SerializeOptionsWrapper::destroy_object_jlong(ptr);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_serializeOptionsToString(
     jre: *mut JNIEnv, _: jclass, options: jlong) -> jstring {
@@ -117,6 +131,7 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_serializeOp
     return string_to_jstring(jre, options.debug_string());
 }
 
+//#[allow(non_snake_case)]
 // #[no_mangle]
 // pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_html2html(
 //     jre: *mut JNIEnv, class: jclass, input: jstring, parse_opts: jlong, serialize_opts: jlong) -> jstring {
@@ -131,6 +146,7 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_serializeOp
 
 
 // TODO also allow to parse fragments?
+// #[allow(non_snake_case)]
 // #[no_mangle]
 // pub unsafe extern fn html2html(string: *const c_char,
 //                  parse_opts: &ParseOpts,
