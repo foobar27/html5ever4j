@@ -40,7 +40,7 @@ pub unsafe fn string_to_jstring(jre: *mut JNIEnv, s: String) -> jstring {
     return ((**jre).NewStringUTF)(jre, to_ptr(s));
 }
 
-pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
+pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: &Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
     let jni_result = ((**jre).NewObjectArray)(jre, items.len() as i32, item_class.class, ptr::null_mut());
     if jni_result.is_null() {
         return Err(())

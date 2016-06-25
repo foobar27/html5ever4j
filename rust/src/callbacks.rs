@@ -1,5 +1,5 @@
 use jni_sys::{jmethodID, jobject, JNIEnv};
-use jni::{JObject, JClass, string_to_jstring};
+use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectarray};
 use algorithms::{Attribute,Callback};
 
 struct JavaCallbackClass {
@@ -91,7 +91,7 @@ impl Callback for JavaCallbackObject {
                 self.class.create_normal_element_method,
                 string_to_jstring(self.jre, ns),
                 string_to_jstring(self.jre, tag_name),
-                flat_attributes);
+                jobject_vec_to_jobjectarray(self.jre, &flat_attributes, self.class.string_class.clone()));
         }
     }
     
