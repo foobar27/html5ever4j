@@ -162,7 +162,7 @@ impl ObjectWrapper<TreeBuilderOpts> for TreeBuilderOptionsWrapper {
             scripting_enabled: try!(self.scripting_enabled.get(jre, &object)),
             iframe_srcdoc: try!(self.iframe_srcdoc.get(jre, &object)),
             drop_doctype: try!(self.drop_doctype.get(jre, &object)),
-            quirks_mode: QuirksMode::NoQuirks, // TODO
+            quirks_mode: try!(self.quirks_mode.get(jre, &object)),
             ignore_missing_rules: false, // TODO verify
         })
     }
@@ -201,7 +201,7 @@ impl ObjectWrapper<SerializeOpts> for SerializeOptionsWrapper {
     unsafe fn create_object(&self, jre: *mut JNIEnv, object: JObject) -> Result<SerializeOpts, ()> {
         return Ok(SerializeOpts {
             scripting_enabled: try!(self.scripting_enabled.get(jre, &object)),
-            traversal_scope: TraversalScope::ChildrenOnly,
+            traversal_scope: try!(self.traversal_scope.get(jre, &object)),
         })
     }
 }

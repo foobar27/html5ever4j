@@ -21,13 +21,13 @@ public class OptionsTest {
     public void treeBuilderOptionsNativeString() {
         // TODO generative testing!
         assertEquals(
-                "TreeBuilderOpts[exact_errors=true,scripting_enabled=true,iframe_srcdoc=true,drop_doctype=true,quirks_mode=NoQuirks]",
+                "TreeBuilderOpts[exact_errors=true,scripting_enabled=true,iframe_srcdoc=true,drop_doctype=true,quirks_mode=LimitedQuirks]",
                 nativeString(TreeBuilderOptions.newBuilder()
                         .reportExactErrors(true)
                         .scriptingEnabled(true)
                         .iframeSrcdoc(true)
                         .dropDoctype(true)
-                        .quirksMode(QuirksMode.NO_QUIRKS)
+                        .quirksMode(QuirksMode.LIMITED_QUIRKS)
                         .build()));
     }
 
