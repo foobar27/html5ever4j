@@ -15,10 +15,10 @@ impl JavaCallbackClass {
     unsafe fn new(jre: *mut JNIEnv, class: JClass) -> Result<JavaCallbackClass, ()> {
         return Ok(JavaCallbackClass {
             string_class: try!(try!(JClass::load(jre, "java.lang", "String")).create_global_ref(jre)),
-            set_doc_type_method: try!(class.get_method_id(jre, "setDocType".to_string(), "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V".to_string())),
-            create_text_method: try!(class.get_method_id(jre, "createText".to_string(), "(Ljava/lang/String;)V".to_string())),
-            create_comment_method: try!(class.get_method_id(jre, "createComment".to_string(), "(Ljava/lang/String;)V".to_string())),
-            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement".to_string(), "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V".to_string()))
+            set_doc_type_method: try!(class.get_method_id(jre, "setDocType", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
+            create_text_method: try!(class.get_method_id(jre, "createText", "(Ljava/lang/String;)V")),
+            create_comment_method: try!(class.get_method_id(jre, "createComment", "(Ljava/lang/String;)V")),
+            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
         })
     }
 

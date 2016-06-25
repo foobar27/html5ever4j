@@ -42,6 +42,7 @@ pub unsafe fn jstring_to_string(jre: *mut JNIEnv, s: jstring) -> String {
     return result
 }
 
+// TODO use Into<String> pattern
 pub unsafe fn string_to_jstring(jre: *mut JNIEnv, s: String) -> jstring {
     return jni!(jre, NewStringUTF, to_ptr(s));
 }
@@ -180,19 +181,19 @@ impl JClass {
         return jfield_id_result(result);
     }
    
-    pub unsafe fn get_method_id(&self, jre: *mut JNIEnv, name: String, signature: String) -> Result<jmethodID, ()> {
+    pub unsafe fn get_method_id(&self, jre: *mut JNIEnv, name: &str, signature: &str) -> Result<jmethodID, ()> {
         let result = jni!(jre, GetMethodID,
                           self.class,
-                          to_ptr(name),
-                          to_ptr(signature));
+                          to_ptr(name.to_string()),
+                          to_ptr(signature.to_string()));
         return jmethod_id_result(result);
     }
     
-    pub unsafe fn get_static_field_id(&self, jre: *mut JNIEnv, name: &str, signature: String) -> Result<jfieldID, ()>{
+    pub unsafe fn get_static_field_id(&self, jre: *mut JNIEnv, name: &str, signature: &str) -> Result<jfieldID, ()>{
         let result = jni!(jre, GetStaticFieldID,
                           self.class,
-                          to_ptr(name.to_owned()),
-                          to_ptr(signature.to_owned()));
+                          to_ptr(name.to_string()),
+                          to_ptr(signature.to_string()));
         return jfield_id_result(result)
     }
 
@@ -260,20 +261,18 @@ pub struct EnumWrapper<T: Clone> {
 
 impl<T: Clone> EnumWrapper<T> {
    
-    pub unsafe fn new(jre: *mut JNIEnv, enum_class: JClass, fqcn: String, mapping: &HashMap<&str, T>) -> Result<EnumWrapper<T>, ()>{
+    pub unsafe fn new(jre: *mut JNIEnv, enum_class: JClass, fqcn: &str, mapping: &HashMap<&str, T>) -> Result<EnumWrapper<T>, ()>{
         let type_sig = format!("L{};", fqcn);
-        let ordinal_method_id = try!(enum_class.get_method_id(jre, 
-            "ordinal".to_string(),
-            "()I".to_string()));
+        let ordinal_method_id = try!(enum_class.get_method_id(jre, "ordinal", "()I"));
         let mut id_map: HashMap<jint, T> = HashMap::new();
         for (value_name, value) in mapping.iter() {
-            let field_id = try!(enum_class.get_static_field_id(jre, value_name.clone(), type_sig.clone())); // TODO use reference instead of clone?
+            let field_id = try!(enum_class.get_static_field_id(jre, value_name.clone(), &type_sig)); // TODO use reference instead of clone?
             let field_value = enum_class.get_static_object_field(jre, field_id);
             let id = field_value.call_int_method(jre, ordinal_method_id);
             id_map.insert(id, value.clone());
         }
         return Ok(EnumWrapper {
-            fully_qualified_class_name: fqcn,
+            fully_qualified_class_name: fqcn.to_string(),
             ordinal_method_id: ordinal_method_id,
             id_map: id_map
         })
@@ -283,7 +282,7 @@ impl<T: Clone> EnumWrapper<T> {
         return EnumWrapper::<T>::new(
             jre,
             try!(JClass::load(jre, package, name)),
-            mangled_class_name(package, name),
+            &mangled_class_name(package, name),
             mapping);
     }
     
@@ -297,7 +296,7 @@ impl<T: Clone> EnumWrapper<T> {
     }
 
     pub fn type_signature(&self) -> String {
-        let mut result = "L".to_string();
+        let mut result = String::from("L");
         result.push_str(&self.fully_qualified_class_name);
         result.push_str(";");
         return result;
