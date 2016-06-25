@@ -244,11 +244,15 @@ impl ParseOptionsWrapper {
                 jre,
                 "tokenizerOptions",
                 class.clone(),
+                PACKAGE,
+                "TokenizerOptions",
                 tokenizer_options)),
             tree_builder_opts: try!(jni::ObjectField::new(
                 jre,
                 "treeBuilderOptions",
                 class.clone(),
+                PACKAGE,
+                "TreeBuilderOptions",
                 tree_builder_options)),
         });
     }

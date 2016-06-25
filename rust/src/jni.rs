@@ -9,6 +9,16 @@ use std::marker::PhantomData;
 
 use helper::{to_ptr,to_string};
 
+fn mangled_class_name(package: &str, name: &str) -> String {
+    let mut result: String = package.chars()
+        .map(|c| if c=='.' {'/'} else {c})
+        .collect();
+    // TODO replace . by /
+    result.push_str("/");
+    result.push_str(name);
+    return result;
+}
+
 pub fn box_to_jlong<T>(t: T) -> jlong {
     return Box::into_raw(Box::new(t)) as jlong;
 }
@@ -113,16 +123,6 @@ impl JObject {
 
 // }
 
-fn mangled_class_name(package: &str, name: &str) -> String {
-    let mut result: String = package.chars()
-        .map(|c| if c=='.' {'/'} else {c})
-        .collect();
-    // TODO replace . by /
-    result.push_str("/");
-    result.push_str(name);
-    return result;
-}
-
 #[derive(Debug, Clone)]
 pub struct JClass {
     //jre: *mut JNIEnv,
@@ -140,6 +140,13 @@ impl JClass {
         }
     }
 
+    pub fn type_signature(package: &str, name: &str) -> String {
+        let mut result = String::from("L");
+        result.push_str(&mangled_class_name(package, name));
+        result.push_str(";");
+        return result;
+    }
+    
     pub unsafe fn load(jre: *mut JNIEnv, package: &str, name: &str) -> Result<JClass, ()> {
         let class = ((**jre).FindClass)(jre, to_ptr(mangled_class_name(package, name)));
         if class.is_null() {
@@ -383,9 +390,10 @@ pub struct ObjectField<Object, Wrapper: ObjectWrapper<Object>> {
 }
 
 impl<Object, Wrapper: ObjectWrapper<Object>> ObjectField<Object, Wrapper> {
-    pub unsafe fn new(jre: *mut JNIEnv, name: &str, class: JClass, wrapper: Rc<Wrapper>) -> Result<ObjectField<Object, Wrapper>, ()> {
+    // TODO ideally we could take the fqcn from JClass?
+    pub unsafe fn new(jre: *mut JNIEnv, name: &str, class: JClass, package: &str, class_name: &str, wrapper: Rc<Wrapper>) -> Result<ObjectField<Object, Wrapper>, ()> {
         return Ok(ObjectField {
-            meta_data: try!(FieldMetaData::new(jre, name, "Z", class)),
+            meta_data: try!(FieldMetaData::new(jre, name, &JClass::type_signature(package, class_name), class)),
             wrapper: wrapper,
             phantom: PhantomData,
         })
