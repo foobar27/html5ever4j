@@ -1,6 +1,6 @@
 use std::ptr;
+use std::rc::Rc;
 use std::result;
-use std::raw::TraitObject;
 use std::ptr::{drop_in_place,copy};
 use jni_sys::{jlong,jboolean,jint,jstring,jclass,jobject,jmethodID,jfieldID,JNIEnv};
 use libc::c_char;
@@ -353,15 +353,15 @@ impl<T: Clone> EnumWrapper<T> {
 
 pub struct EnumField<T: Clone> {
     meta_data: FieldMetaData,
-    enum_wrapper: EnumWrapper<T>,
+    enum_wrapper: Rc<EnumWrapper<T>>,
 }
 
 impl<T: Clone> EnumField<T> {
-    pub unsafe fn new(jre: *mut JNIEnv, enum_wrapper: &EnumWrapper<T>, name: &str, class: JClass) -> Result<EnumField<T>, ()> {
+    pub unsafe fn new(jre: *mut JNIEnv, enum_wrapper: Rc<EnumWrapper<T>>, name: &str, class: JClass) -> Result<EnumField<T>, ()> {
         let s = enum_wrapper.type_signature().to_owned();
         return Ok(EnumField {
             meta_data: try!(FieldMetaData::new(jre, name, &s[..], class)),
-            enum_wrapper: enum_wrapper.clone()
+            enum_wrapper: enum_wrapper,
         })
     }
 }
@@ -375,15 +375,15 @@ impl<T: Clone> FieldGetter<T> for EnumField<T> {
 }
 
 // TODO automatically deduce Object from ObjectWrapper (type argument)
-pub struct ObjectField<'a, Object, Wrapper: 'a + ObjectWrapper<Object>> {
+pub struct ObjectField<Object, Wrapper: ObjectWrapper<Object>> {
 //pub struct ObjectField<Wrapper: ObjectWrapper> {
     meta_data: FieldMetaData,
-    wrapper: &'a Wrapper,
+    wrapper: Rc<Wrapper>,
     phantom: PhantomData<Object>
 }
 
-impl<'a, Object, Wrapper: 'a + ObjectWrapper<Object>> ObjectField<'a, Object, Wrapper> {
-    pub unsafe fn new(jre: *mut JNIEnv, name: &str, class: JClass, wrapper: &'a Wrapper) -> Result<ObjectField<'a, Object, Wrapper>, ()> {
+impl<Object, Wrapper: ObjectWrapper<Object>> ObjectField<Object, Wrapper> {
+    pub unsafe fn new(jre: *mut JNIEnv, name: &str, class: JClass, wrapper: Rc<Wrapper>) -> Result<ObjectField<Object, Wrapper>, ()> {
         return Ok(ObjectField {
             meta_data: try!(FieldMetaData::new(jre, name, "Z", class)),
             wrapper: wrapper,
@@ -392,7 +392,7 @@ impl<'a, Object, Wrapper: 'a + ObjectWrapper<Object>> ObjectField<'a, Object, Wr
     }
 }
 
-impl<'a, Object, Wrapper: 'a + ObjectWrapper<Object>> FieldGetter<Object> for ObjectField<'a, Object, Wrapper> {
+impl<Object, Wrapper: ObjectWrapper<Object>> FieldGetter<Object> for ObjectField<Object, Wrapper> {
     unsafe fn get(&self, jre: *mut JNIEnv, object: &JObject) -> Result<Object, ()> {
         let value = object.get_object_field(jre, self.meta_data.field_id);
         return self.wrapper.create_object(jre, value);

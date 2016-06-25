@@ -1,4 +1,5 @@
 use std::result;
+use std::rc::Rc;
 use std::str;
 use std::mem;
 use std::ptr;
@@ -41,16 +42,16 @@ pub struct SerializeOptionsWrapper {
     traversal_scope: jni::EnumField<TraversalScope>,
 }
 
-pub struct ParseOptionsWrapper<'a> {
-    tokenizer_opts: jni::ObjectField<'a, TokenizerOpts, TokenizerOptionsWrapper>,
-    tree_builder_opts: jni::ObjectField<'a, TreeBuilderOpts, TreeBuilderOptionsWrapper>,
+pub struct ParseOptionsWrapper {
+    tokenizer_opts: jni::ObjectField<TokenizerOpts, TokenizerOptionsWrapper>,
+    tree_builder_opts: jni::ObjectField<TreeBuilderOpts, TreeBuilderOptionsWrapper>,
 }
 
-pub struct Context<'a> {
-    tokenizer_options_wrapper: TokenizerOptionsWrapper,
-    tree_builder_options_wrapper: TreeBuilderOptionsWrapper,
-    serialize_options_wrapper: SerializeOptionsWrapper,
-    parse_options_wrapper: ParseOptionsWrapper<'a>,
+pub struct Context {
+    tokenizer_options_wrapper: Rc<TokenizerOptionsWrapper>,
+    tree_builder_options_wrapper: Rc<TreeBuilderOptionsWrapper>,
+    serialize_options_wrapper: Rc<SerializeOptionsWrapper>,
+    parse_options_wrapper: Rc<ParseOptionsWrapper>,
 }
 
 pub trait FromContext<Object> {
@@ -152,7 +153,7 @@ impl DebugString for TreeBuilderOpts {
 
 impl TreeBuilderOptionsWrapper {
 
-    unsafe fn new(jre: *mut JNIEnv, class: JClass, quirks_mode_wrapper: &EnumWrapper<QuirksMode>) -> Result<TreeBuilderOptionsWrapper, ()> {
+    unsafe fn new(jre: *mut JNIEnv, class: JClass, quirks_mode_wrapper: Rc<EnumWrapper<QuirksMode>>) -> Result<TreeBuilderOptionsWrapper, ()> {
         return Ok(TreeBuilderOptionsWrapper {
             exact_errors: try!(jni::BoolField::new(jre, "reportExactErrors", class.clone())),
             scripting_enabled: try!(jni::BoolField::new(jre, "scriptingEnabled", class.clone())),
@@ -162,7 +163,7 @@ impl TreeBuilderOptionsWrapper {
         })
     }
 
-    unsafe fn load(jre: *mut JNIEnv, quirks_mode_wrapper: &EnumWrapper<QuirksMode>) -> Result<TreeBuilderOptionsWrapper, ()> {
+    unsafe fn load(jre: *mut JNIEnv, quirks_mode_wrapper: Rc<EnumWrapper<QuirksMode>>) -> Result<TreeBuilderOptionsWrapper, ()> {
         return TreeBuilderOptionsWrapper::new(
             jre,
             try!(JClass::load(jre, PACKAGE, "TreeBuilderOptions")),
@@ -199,14 +200,14 @@ impl DebugString for SerializeOpts {
 }
 
 impl SerializeOptionsWrapper {
-    unsafe fn new(jre: *mut JNIEnv, class: JClass, traversal_scope_wrapper: &EnumWrapper<TraversalScope>) -> Result<SerializeOptionsWrapper, ()> {
+    unsafe fn new(jre: *mut JNIEnv, class: JClass, traversal_scope_wrapper: Rc<EnumWrapper<TraversalScope>>) -> Result<SerializeOptionsWrapper, ()> {
         return Ok(SerializeOptionsWrapper {
             scripting_enabled: try!(jni::BoolField::new(jre, "scriptingEnabled", class.clone())),
             traversal_scope: try!(jni::EnumField::new(jre, traversal_scope_wrapper, "traversalScope", class.clone()))
         });
     }
 
-    unsafe fn load(jre: *mut JNIEnv, traversal_scope_wrapper: &EnumWrapper<TraversalScope>) -> Result<SerializeOptionsWrapper, ()> {
+    unsafe fn load(jre: *mut JNIEnv, traversal_scope_wrapper: Rc<EnumWrapper<TraversalScope>>) -> Result<SerializeOptionsWrapper, ()> {
         let class = try!(JClass::load(jre, PACKAGE, "SerializeOptions"));
         return SerializeOptionsWrapper::new(jre, class, traversal_scope_wrapper);
     }
@@ -236,8 +237,8 @@ impl DebugString for ParseOpts {
     }
 }
 
-impl<'a> ParseOptionsWrapper<'a> {
-    unsafe fn new(jre: *mut JNIEnv, class: JClass, tokenizer_options: &'a TokenizerOptionsWrapper, tree_builder_options: &'a TreeBuilderOptionsWrapper) -> Result<ParseOptionsWrapper<'a>, ()> {
+impl ParseOptionsWrapper {
+    unsafe fn new(jre: *mut JNIEnv, class: JClass, tokenizer_options: Rc<TokenizerOptionsWrapper>, tree_builder_options: Rc<TreeBuilderOptionsWrapper>) -> Result<ParseOptionsWrapper, ()> {
         return Ok(ParseOptionsWrapper {
             tokenizer_opts: try!(jni::ObjectField::new(
                 jre,
@@ -251,13 +252,13 @@ impl<'a> ParseOptionsWrapper<'a> {
                 tree_builder_options)),
         });
     }
-    unsafe fn load(jre: *mut JNIEnv, tokenizer_options: &'a TokenizerOptionsWrapper, tree_builder_options: &'a TreeBuilderOptionsWrapper) -> Result<ParseOptionsWrapper<'a>, ()> {
+    unsafe fn load(jre: *mut JNIEnv, tokenizer_options: Rc<TokenizerOptionsWrapper>, tree_builder_options: Rc<TreeBuilderOptionsWrapper>) -> Result<ParseOptionsWrapper, ()> {
         let class = try!(JClass::load(jre, PACKAGE, "ParseOptions"));
         return ParseOptionsWrapper::new(jre, class, tokenizer_options, tree_builder_options);
     }
 }
 
-impl<'a> ObjectWrapper<ParseOpts> for ParseOptionsWrapper<'a> {
+impl ObjectWrapper<ParseOpts> for ParseOptionsWrapper {
     unsafe fn create_object(&self, jre: *mut JNIEnv, object: JObject) -> Result<ParseOpts, ()> {
         return Ok(ParseOpts {
             tokenizer: try!(self.tokenizer_opts.get(jre, &object)),
@@ -266,35 +267,41 @@ impl<'a> ObjectWrapper<ParseOpts> for ParseOptionsWrapper<'a> {
     }
 }
 
-impl<'a> FromContext<ParseOpts> for ParseOptionsWrapper<'a> {
+impl FromContext<ParseOpts> for ParseOptionsWrapper {
     unsafe fn from_context(jre: *mut JNIEnv, context: &Context, object: JObject) -> Result<ParseOpts, ()> {
      return context.parse_options_wrapper.create_object(jre, object);   
     }
 }
 
+unsafe fn create_quirks_mode_wrapper(jre: *mut JNIEnv) -> Result<EnumWrapper<QuirksMode>, ()> {
+    let mut quirks_mapping = HashMap::<&str, QuirksMode>::new();
+    quirks_mapping.insert("QUIRKS", QuirksMode::Quirks);
+    quirks_mapping.insert("LIMITED_QUIRKS", QuirksMode::LimitedQuirks);
+    quirks_mapping.insert("NO_QUIRKS", QuirksMode::NoQuirks);
+    return EnumWrapper::<QuirksMode>::load(jre, PACKAGE, "QuirksMode", &quirks_mapping);
+}
 
-impl<'a> Context<'a> {
+unsafe fn create_traversal_scope_wrapper(jre: *mut JNIEnv) -> Result<EnumWrapper<TraversalScope>, ()> {
+    let mut traversal_scope_mapping = HashMap::<&str, TraversalScope>::new();
+    traversal_scope_mapping.insert("INCLUDE_NODE", TraversalScope::IncludeNode);
+    traversal_scope_mapping.insert("CHILDREN_ONLY", TraversalScope::ChildrenOnly);
+    return EnumWrapper::<TraversalScope>::load(jre, PACKAGE, "SerializeOptions$TraversalScope", &traversal_scope_mapping);
+}
 
-    pub unsafe fn new(jre: *mut JNIEnv) -> Result<Context<'a>, ()> {
-        let mut quirks_mapping = HashMap::<&str, QuirksMode>::new();
-        quirks_mapping.insert("QUIRKS", QuirksMode::Quirks);
-        quirks_mapping.insert("LIMITED_QUIRKS", QuirksMode::LimitedQuirks);
-        quirks_mapping.insert("NO_QUIRKS", QuirksMode::NoQuirks);
-        let quirks_mode_wrapper = try!(EnumWrapper::<QuirksMode>::load(jre, PACKAGE, "QuirksMode", &quirks_mapping));
+impl Context {
 
-        let mut traversal_scope_mapping = HashMap::<&str, TraversalScope>::new();
-        traversal_scope_mapping.insert("INCLUDE_NODE", TraversalScope::IncludeNode);
-        traversal_scope_mapping.insert("CHILDREN_ONLY", TraversalScope::ChildrenOnly);
-        let traversal_scope_wrapper = try!(EnumWrapper::<TraversalScope>::load(jre, PACKAGE, "SerializeOptions$TraversalScope", &traversal_scope_mapping));
+    pub unsafe fn new(jre: *mut JNIEnv) -> Result<Context, ()> {
+        let quirks_mode_wrapper = Rc::new(try!(create_quirks_mode_wrapper(jre)));
+        let traversal_scope_wrapper = Rc::new(try!(create_traversal_scope_wrapper(jre)));
 
-        let tokenizer_options_wrapper = try!(TokenizerOptionsWrapper::load(jre));
-        let tree_builder_options_wrapper = try!(TreeBuilderOptionsWrapper::load(jre, &quirks_mode_wrapper));
+        let tokenizer_options_wrapper = Rc::new(try!(TokenizerOptionsWrapper::load(jre)));
+        let tree_builder_options_wrapper = Rc::new(try!(TreeBuilderOptionsWrapper::load(jre, quirks_mode_wrapper)));
 
         return Ok(Context {
-            tokenizer_options_wrapper: tokenizer_options_wrapper,
-            tree_builder_options_wrapper: tree_builder_options_wrapper,
-            serialize_options_wrapper: try!(SerializeOptionsWrapper::load(jre, &traversal_scope_wrapper)),
-            parse_options_wrapper: try!(ParseOptionsWrapper::load(jre, &tokenizer_options_wrapper, &tree_builder_options_wrapper)),
+            tokenizer_options_wrapper: tokenizer_options_wrapper.clone(),
+            tree_builder_options_wrapper: tree_builder_options_wrapper.clone(),
+            serialize_options_wrapper: Rc::new(try!(SerializeOptionsWrapper::load(jre, traversal_scope_wrapper))),
+            parse_options_wrapper: Rc::new(try!(ParseOptionsWrapper::load(jre, tokenizer_options_wrapper, tree_builder_options_wrapper))),
         });
     }
     
