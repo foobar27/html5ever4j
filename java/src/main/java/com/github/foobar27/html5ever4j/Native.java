@@ -49,6 +49,7 @@ class Native {
 
     private static native long createParseOptions(long wrapper, ParseOptions options);
     static native void destroyParseOptions(long pointer);
+    static native String parseOptionsToString(long pointer);
 
     private static native long createSerializeOptions(long wrapper,SerializeOptions options);
     static native void destroySerializeOptions(long pointer);

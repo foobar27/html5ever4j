@@ -66,10 +66,23 @@ public final class ParseOptions {
         }
 
         @Override
+        public String toString() {
+            return Native.parseOptionsToString(pointer);
+        }
+
+        @Override
         protected void finalize() throws Throwable {
             Native.destroyParseOptions(pointer);
             super.finalize();
         }
+    }
+
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
     }
 
     public static final class Builder {
