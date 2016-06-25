@@ -12,8 +12,9 @@ pub fn to_string(pointer: *const c_char) -> String {
 }
 
 /// Convert a Rust string to a native string
-pub fn to_ptr(string: String) -> *const c_char {
-    let cs = CString::new(string.as_bytes()).unwrap();
+pub fn to_ptr<S>(string: S) -> *const c_char
+    where S: Into<String> {
+    let cs = CString::new(string.into().as_bytes()).unwrap();
     let ptr = cs.as_ptr();
     // Tell Rust not to clean up the string while we still have a pointer to it.
     // Otherwise, we'll get a segfault.

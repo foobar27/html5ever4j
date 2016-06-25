@@ -201,7 +201,7 @@ impl ObjectWrapper<SerializeOpts> for SerializeOptionsWrapper {
     unsafe fn create_object(&self, jre: *mut JNIEnv, object: JObject) -> Result<SerializeOpts, ()> {
         return Ok(SerializeOpts {
             scripting_enabled: try!(self.scripting_enabled.get(jre, &object)),
-            traversal_scope: try!(self.traversal_scope.get(jre, &object)),
+            traversal_scope: try!(self.traversal_scope.get(jre, &object))
         })
     }
 }

@@ -42,8 +42,8 @@ pub unsafe fn jstring_to_string(jre: *mut JNIEnv, s: jstring) -> String {
     return result
 }
 
-// TODO use Into<String> pattern
-pub unsafe fn string_to_jstring(jre: *mut JNIEnv, s: String) -> jstring {
+pub unsafe fn string_to_jstring<S>(jre: *mut JNIEnv, s: S) -> jstring
+    where S: Into<String> {
     return jni!(jre, NewStringUTF, to_ptr(s));
 }
 
@@ -176,24 +176,24 @@ impl JClass {
     unsafe fn get_field_id(&self, jre: *mut JNIEnv, name: &str, sig: &str) -> Result<jfieldID, ()> {
         let result = jni!(jre, GetFieldID,
                           self.class,
-                          to_ptr(name.to_string()),
-                          to_ptr(sig.to_string()));
+                          to_ptr(name),
+                          to_ptr(sig));
         return jfield_id_result(result);
     }
    
     pub unsafe fn get_method_id(&self, jre: *mut JNIEnv, name: &str, signature: &str) -> Result<jmethodID, ()> {
         let result = jni!(jre, GetMethodID,
                           self.class,
-                          to_ptr(name.to_string()),
-                          to_ptr(signature.to_string()));
+                          to_ptr(name),
+                          to_ptr(signature));
         return jmethod_id_result(result);
     }
     
     pub unsafe fn get_static_field_id(&self, jre: *mut JNIEnv, name: &str, signature: &str) -> Result<jfieldID, ()>{
         let result = jni!(jre, GetStaticFieldID,
                           self.class,
-                          to_ptr(name.to_string()),
-                          to_ptr(signature.to_string()));
+                          to_ptr(name),
+                          to_ptr(signature));
         return jfield_id_result(result)
     }
 
@@ -266,7 +266,7 @@ impl<T: Clone> EnumWrapper<T> {
         let ordinal_method_id = try!(enum_class.get_method_id(jre, "ordinal", "()I"));
         let mut id_map: HashMap<jint, T> = HashMap::new();
         for (value_name, value) in mapping.iter() {
-            let field_id = try!(enum_class.get_static_field_id(jre, value_name.clone(), &type_sig)); // TODO use reference instead of clone?
+            let field_id = try!(enum_class.get_static_field_id(jre, value_name, &type_sig));
             let field_value = enum_class.get_static_object_field(jre, field_id);
             let id = field_value.call_int_method(jre, ordinal_method_id);
             id_map.insert(id, value.clone());
