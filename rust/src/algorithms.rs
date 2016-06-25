@@ -1,6 +1,6 @@
 use std::str;
 
-use std::io::{self, Write};
+use std::io::{Write};
 use std::default::Default;
 
 use tendril::{StrTendril,TendrilSink};
@@ -21,7 +21,7 @@ pub fn html2html(input: String, parse_opts: &ParseOpts, serialize_opts: &Seriali
     let mut buf = Vec::<u8>::new();
     buf.write_all(b"<!DOCTYPE html>\n") // TODO make optional?
         .ok().expect("writing DOCTYPE failed");
-    serialize(&mut io::stdout(), &dom.document, serialize_opts.clone())
+    serialize(&mut buf, &dom.document, serialize_opts.clone())
         .ok().expect("serialization failed");
     match str::from_utf8(&*buf) {
         Ok(v) => return String::from(v),

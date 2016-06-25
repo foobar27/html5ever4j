@@ -18,7 +18,7 @@ use html5ever::serialize::SerializeOpts;
 use html5ever::tokenizer::TokenizerOpts;
 use html5ever::tree_builder::TreeBuilderOpts;
 
-use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring};
+use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring, jstring_to_string};
 
 use options::{Context,TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,FromContext,DebugString};
 
@@ -131,18 +131,20 @@ pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_serializeOp
     return string_to_jstring(jre, options.debug_string());
 }
 
-//#[allow(non_snake_case)]
-// #[no_mangle]
-// pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_html2html(
-//     jre: *mut JNIEnv, class: jclass, input: jstring, parse_opts: jlong, serialize_opts: jlong) -> jstring {
+#[allow(non_snake_case)]
+#[no_mangle]
+pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_html2html(
+    jre: *mut JNIEnv, class: jclass, input: jstring, parse_opts: jlong, serialize_opts: jlong) -> jstring {
     
-//     let ref parse_opts = *(parse_opts as *mut ParseOpts);
-//     let ref serialize_opts = *(serialize_opts as *mut SerializeOpts);
-//     return helper::to_ptr(algorithm::html2html(
-//         jstring_to_string(jre, input),
-//         parse_opts,
-//         serialize_opts));
-// }
+    let ref parse_opts = *(parse_opts as *mut ParseOpts);
+    let ref serialize_opts = *(serialize_opts as *mut SerializeOpts);
+    return string_to_jstring(
+        jre,
+        algorithms::html2html(
+            jstring_to_string(jre, input),
+            parse_opts,
+            serialize_opts));
+}
 
 
 // TODO also allow to parse fragments?
