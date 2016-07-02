@@ -98,7 +98,6 @@ pub fn parse<C: Callback>(input: String, parse_opts: &ParseOpts, callback: &C) {
     let dom = parse_string(input, parse_opts);
     // TODO errors via callback
     parse_rec(dom.document, callback);
-    println!("DEBUG: SW: parsing finished");
 }
 
 

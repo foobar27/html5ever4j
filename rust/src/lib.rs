@@ -165,7 +165,6 @@ pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_parse(
         jstring_to_string(jre, input),
         parse_opts,
         &callback_object);
-    println!("DEBUG: SW: end of native call");
 }
 
 // TODO also allow to parse fragments?
