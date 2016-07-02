@@ -8,6 +8,12 @@ class Parser {
 
     // TODO also consider text node, comments etc
 
+    // TODO why static?
+    public static void parse(String inputHtml, ParseOptions parseOptions) {
+        Native.getInstance().parse(inputHtml, parseOptions, new CallBack());
+    }
+
+
     static class Attribute {
         String namespace;
         String key;

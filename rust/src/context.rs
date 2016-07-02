@@ -16,7 +16,7 @@ pub struct Context {
     tree_builder_options_wrapper: Rc<TreeBuilderOptionsWrapper>,
     serialize_options_wrapper: Rc<SerializeOptionsWrapper>,
     parse_options_wrapper: Rc<ParseOptionsWrapper>,
-    java_callback_class: Rc<JavaCallbackClass>,
+    pub java_callback_class: Rc<JavaCallbackClass>, // TODO make private again
 }
 
 // TODO rename to OptionsFromContext

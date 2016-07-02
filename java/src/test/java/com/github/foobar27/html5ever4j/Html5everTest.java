@@ -16,4 +16,10 @@ public class Html5everTest {
                 SerializeOptions.newBuilder().build());
         assertThat(tidied, is(equalTo("<!DOCTYPE html>\n<html><head></head><body><p>foo</p></body></html>")));
     }
+
+    @Test
+    public void parseShouldAddClosingTag() {
+        Parser.parse("<p>foo", ParseOptions.newBuilder().build());
+        // TODO test something!
+    }
 }

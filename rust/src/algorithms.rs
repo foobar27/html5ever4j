@@ -45,7 +45,7 @@ pub trait Callback {
     fn create_annotation_xml_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, b: bool);
 }
 
-fn create_node<C: Callback>(node: &NodeEnum, callback: &C) {
+fn visit<C: Callback>(node: &NodeEnum, callback: &C) {
     match *node {
         Document => {
             // skip
@@ -86,9 +86,19 @@ fn create_node<C: Callback>(node: &NodeEnum, callback: &C) {
     }
 }
 
-pub fn parse<C: Callback>(input: String, parse_opts: &ParseOpts, serialize_opts: &SerializeOpts, callback: &C) {
-    // let dom = parse_string(input, parse_opts);
-    // parse_rec(dom.root.clone(), callback);
+fn parse_rec<C: Callback>(handle: Handle, callback: &C) {
+    let node = handle.borrow();
+    visit(&node.node, callback);
+    for child in node.children.iter() {
+        parse_rec(child.clone(), callback);
+    }
+}
+
+pub fn parse<C: Callback>(input: String, parse_opts: &ParseOpts, callback: &C) {
+    let dom = parse_string(input, parse_opts);
+    // TODO errors via callback
+    parse_rec(dom.document, callback);
+    println!("DEBUG: SW: parsing finished");
 }
 
 

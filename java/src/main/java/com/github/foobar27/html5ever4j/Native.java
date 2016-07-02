@@ -37,26 +37,45 @@ class Native {
 //    }
 
     private static native long createContext();
+
     private static native void destroyContext(long pointer);
 
     private static native long createTokenizerOptions(long wrapper, TokenizerOptions options);
+
     static native void destroyTokenizerOptions(long pointer);
+
     static native String tokenizerOptionsToString(long pointer);
 
     private static native long createTreeBuilderOptions(long wrapper, TreeBuilderOptions options);
+
     static native void destroyTreeBuilderOptions(long pointer);
+
     static native String treeBuilderOptionsToString(long pointer);
 
     private static native long createParseOptions(long wrapper, ParseOptions options);
+
     static native void destroyParseOptions(long pointer);
+
     static native String parseOptionsToString(long pointer);
 
-    private static native long createSerializeOptions(long wrapper,SerializeOptions options);
+    private static native long createSerializeOptions(long wrapper, SerializeOptions options);
+
     static native void destroySerializeOptions(long pointer);
 
     static native String html2html(String inputHtml,
                                    long parseOptions,
                                    long serializeOptions);
+
+    static native void parse(long contextPointer,
+                               String inputHtml,
+                               long parseOptions,
+                               Parser.CallBack callback);
+
+    void parse(String inputHtml,
+               ParseOptions parseOptions,
+               Parser.CallBack callback) {
+        parse(contextPointer, inputHtml, parseOptions.getNativeStruct().pointer, callback);
+    }
 
     long createTokenizerOptions(TokenizerOptions options) {
         return createTokenizerOptions(contextPointer, options);

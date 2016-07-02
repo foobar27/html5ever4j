@@ -2,6 +2,7 @@ use jni_sys::{jmethodID, jobject, jboolean, JNIEnv};
 use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectarray};
 use algorithms::{Attribute,Callback};
 use libc::c_uint;
+use std::rc::Rc;
 
 static PACKAGE: &'static str = "com.github.foobar27.html5ever4j"; // TODO duplicate code
 
@@ -41,15 +42,15 @@ impl JavaCallbackClass {
     
 }
 
-struct JavaCallbackObject {
+pub struct JavaCallbackObject {
     jre: *mut JNIEnv,
-    class: JavaCallbackClass,
+    class: Rc<JavaCallbackClass>,
     object: JObject,
 }
 
 impl JavaCallbackObject {
 
-    fn new(jre: *mut JNIEnv, class: JavaCallbackClass, object: JObject) -> JavaCallbackObject {
+    pub fn new(jre: *mut JNIEnv, class: Rc<JavaCallbackClass>, object: JObject) -> JavaCallbackObject {
         return JavaCallbackObject {
             jre: jre,
             class: class,
@@ -107,7 +108,12 @@ impl Callback for JavaCallbackObject {
                  self.class.create_normal_element_method,
                  string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
                  string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()));
+                 jobject_vec_to_jobjectarray(
+                     self.jre,
+                     &flatten_attributes(self.jre, &attributes),
+                     self.class.string_class.clone())
+            .unwrap());
+            // TODO dangerous unwrap
         }
     }
 
@@ -119,7 +125,7 @@ impl Callback for JavaCallbackObject {
                  self.class.create_script_element_method,
                  string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
                  string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()),
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap(), // TODO dangerous unwrap
                  already_started as c_uint);
         }
     }
@@ -131,7 +137,8 @@ impl Callback for JavaCallbackObject {
                  self.class.create_template_element_method,
                  string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
                  string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()));
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap());
+            // TODO dangerous unwrap
         }
     }
 
@@ -143,7 +150,7 @@ impl Callback for JavaCallbackObject {
                  self.class.create_annotation_xml_element_method,
                  string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
                  string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()),
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap(), // TODO dangerous unwrap
                  b as c_uint);
         }
     }

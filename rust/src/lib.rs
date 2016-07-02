@@ -21,9 +21,10 @@ use html5ever::serialize::SerializeOpts;
 use html5ever::tokenizer::TokenizerOpts;
 use html5ever::tree_builder::TreeBuilderOpts;
 
-use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring, jstring_to_string};
+use jni::{ObjectWrapper, JObject, box_to_jlong, free_struct, string_to_jstring, jstring_to_string};
 
 use options::{TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,DebugString};
+use callbacks::{JavaCallbackClass,JavaCallbackObject};
 use context::{Context,FromContext};
 
 // TODO simplify via macros
@@ -152,6 +153,20 @@ pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_html2html(
             serialize_opts));
 }
 
+#[allow(non_snake_case)]
+#[no_mangle]
+pub unsafe extern fn Java_com_github_foobar27_html5ever4j_Native_parse(
+    jre: *mut JNIEnv, class: jclass, context: jlong, input: jstring, parse_opts: jlong, callback_object: jobject) {
+    let ref context = *(context as *mut Context);
+    let ref parse_opts = *(parse_opts as *mut ParseOpts);
+    let callback_object = JObject::new_borrowed(callback_object);
+    let callback_object = JavaCallbackObject::new(jre, context.java_callback_class.clone(), callback_object);
+    algorithms::parse(
+        jstring_to_string(jre, input),
+        parse_opts,
+        &callback_object);
+    println!("DEBUG: SW: end of native call");
+}
 
 // TODO also allow to parse fragments?
 // #[allow(non_snake_case)]
