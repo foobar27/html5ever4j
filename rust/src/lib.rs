@@ -24,6 +24,8 @@ use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring, jstring_t
 
 use options::{Context,TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,FromContext,DebugString};
 
+// TODO simplify via macros
+
 #[allow(non_snake_case)]
 #[no_mangle]
 pub unsafe extern "C" fn Java_com_github_foobar27_html5ever4j_Native_createContext(

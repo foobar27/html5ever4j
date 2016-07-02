@@ -1,6 +1,10 @@
-use jni_sys::{jmethodID, jobject, JNIEnv};
+use jni_sys::{jmethodID, jobject, jboolean, JNIEnv};
 use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectarray};
 use algorithms::{Attribute,Callback};
+use libc::c_uint;
+
+// TODO create macro for the following structure:
+// (potentially with string/jboolean/... serialization?)
 
 struct JavaCallbackClass {
     string_class: JClass,
@@ -8,6 +12,9 @@ struct JavaCallbackClass {
     create_text_method: jmethodID,
     create_comment_method: jmethodID,
     create_normal_element_method: jmethodID,
+    create_script_element_method: jmethodID,
+    create_template_element_method: jmethodID,
+    create_annotation_xml_element_method: jmethodID,
 }
 
 impl JavaCallbackClass {
@@ -18,7 +25,10 @@ impl JavaCallbackClass {
             set_doc_type_method: try!(class.get_method_id(jre, "setDocType", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
             create_text_method: try!(class.get_method_id(jre, "createText", "(Ljava/lang/String;)V")),
             create_comment_method: try!(class.get_method_id(jre, "createComment", "(Ljava/lang/String;)V")),
-            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V"))
+            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V")),
+            create_script_element_method: try!(class.get_method_id(jre, "createScriptElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Z)V")),
+            create_template_element_method: try!(class.get_method_id(jre, "createTemplateElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)V")),
+            create_annotation_xml_element_method: try!(class.get_method_id(jre, "createAnnotationXmlElement", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Z)V")),
         })
     }
 
@@ -43,8 +53,18 @@ impl JavaCallbackObject {
     
 }
 
+unsafe fn flatten_attributes(jre: *mut JNIEnv, attributes: &Vec<Attribute>) -> Vec<jobject> {
+    let mut flat_attributes = Vec::<jobject>::new();
+    for a in attributes {
+        flat_attributes.push(string_to_jstring(jre, a.ns.clone())); // TODO remove clone!
+        flat_attributes.push(string_to_jstring(jre, a.key.clone())); // TODO remove clone!
+        flat_attributes.push(string_to_jstring(jre, a.value.clone())); // TODO remove clone!
+    }
+    return flat_attributes;
+}
+
 impl Callback for JavaCallbackObject {
-    
+
     fn set_doc_type(&self, name: String, public: String, system: String) {
         unsafe {
             jni!(self.jre, CallVoidMethod,
@@ -73,22 +93,52 @@ impl Callback for JavaCallbackObject {
                  string_to_jstring(self.jre, comment));
                                                       }
     }
-
+   
     fn create_normal_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>) {
         unsafe {
-            let mut flat_attributes = Vec::<jobject>::new();
-            for a in attributes {
-                flat_attributes.push(string_to_jstring(self.jre, a.ns));
-                flat_attributes.push(string_to_jstring(self.jre, a.key));
-                flat_attributes.push(string_to_jstring(self.jre, a.value));
-            }
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
                  self.class.create_normal_element_method,
-                 string_to_jstring(self.jre, ns),
-                 string_to_jstring(self.jre, tag_name),
-                 jobject_vec_to_jobjectarray(self.jre, &flat_attributes, self.class.string_class.clone()));
+                 string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
+                 string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()));
         }
     }
-    
+
+    fn create_script_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, already_started: bool) {
+        let already_started: jboolean = if already_started {1} else {0};
+        unsafe {
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_script_element_method,
+                 string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
+                 string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()),
+                 already_started as c_uint);
+        }
+    }
+
+    fn create_template_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>) {
+        unsafe {
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_template_element_method,
+                 string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
+                 string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()));
+        }
+    }
+
+    fn create_annotation_xml_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, b: bool) {
+        let b: jboolean = if b {1} else {0};
+        unsafe {
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.create_annotation_xml_element_method,
+                 string_to_jstring(self.jre, ns), // TODO profit from QualName -> same jstring
+                 string_to_jstring(self.jre, tag_name), // TODO profit from QualName -> same jstring 
+                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()),
+                 b as c_uint);
+        }
+    }
 }
