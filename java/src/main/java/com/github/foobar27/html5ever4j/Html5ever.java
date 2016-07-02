@@ -9,4 +9,8 @@ public final class Html5ever {
                 serializeOptions.getNativeStruct().pointer);
     }
 
+    public static <N> void parse(String inputHtml, ParseOptions parseOptions, Sink<N> sink) {
+        new Parser<N>(parseOptions).parse(inputHtml, sink);
+    }
+
 }

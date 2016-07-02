@@ -2,22 +2,16 @@ package com.github.foobar27.html5ever4j;
 
 import java.util.*;
 
-class Parser {
+class Parser<N> {
 
-    //private final Sink<N> sink;
+    private final ParseOptions parseOptions;
 
-    // TODO also consider text node, comments etc
-
-    // TODO why static?
-    public static void parse(String inputHtml, ParseOptions parseOptions) {
-        Native.getInstance().parse(inputHtml, parseOptions, new CallBack());
+    Parser(ParseOptions parseOptions) {
+        this.parseOptions = parseOptions;
     }
 
-
-    static class Attribute {
-        String namespace;
-        String key;
-        String value;
+    public void parse(String inputHtml, Sink<N> sink) {
+        Native.getInstance().parse(inputHtml, parseOptions, new CallBack(sink));
     }
 
     static class CallBack {
@@ -35,7 +29,11 @@ class Parser {
         private static final int NODE_TYPE_ANNOTATION_XML_FALSE = 8; // TODO bad naming!
         private static final int NODE_TYPE_ANNOTATION_XML_TRUE = 9; // TODO bad naming!
 
-        //final Sink<N> sink;
+        final Sink<?> sink;
+
+        CallBack(Sink<?> sink) {
+            this.sink = sink;
+        }
 
         // The type of a node.
         int type;
@@ -49,72 +47,43 @@ class Parser {
         String text;
 
         void setDocType(String name, String _public, String system) {
-            System.out.println(String.format("setDocType(%s,%s,%s)", name, _public, system));
-            //return sink.setDocType(name, _public, system);
+            sink.setDocType(name, _public, system); // TODO result ignored
         }
 
         void createText(String text) {
-            System.out.println(String.format("createText(%s)", text));
-            //return sink.createText(text);
+            sink.createText(text); // TODO result ignored
         }
 
         void createComment(String comment) {
-            System.out.println(String.format("createComment(%s)", comment));
-            //return sink.createComment(comment);
+            sink.createComment(comment); // TODO result ignored
         }
 
         void createNormalElement(String ns, String tagName, String[] attributes) {
-            assert(attributes.length % 3 == 0);
-            System.out.println(String.format("createNormalElement(%s, %s, %s)",
-                    ns,
-                    tagName,
-                    Arrays.asList(attributes)));
-            //sink.createElement(ns, tagName, )
+            sink.createNormalElement(ns, tagName, parseAttributes(attributes));
         }
 
         void createScriptElement(String ns, String tagName, String[] attributes, boolean alreadyStarted) {
-            assert(attributes.length % 3 == 0);
-            System.out.println(String.format("createScriptElement(%s, %s, %s, %b)",
-                    ns,
-                    tagName,
-                    Arrays.asList(attributes),
-                    alreadyStarted));
-            //sink.createElement(ns, tagName, )
+            sink.createScriptElement(ns, tagName, parseAttributes(attributes), alreadyStarted);
         }
 
         void createTemplateElement(String ns, String tagName, String[] attributes) {
-            assert(attributes.length % 3 == 0);
-            System.out.println(String.format("createTemplateElement(%s, %s, %s)",
-                    ns,
-                    tagName,
-                    Arrays.asList(attributes)));
-            //sink.createElement(ns, tagName, )
+            sink.createTemplateElement(ns, tagName, parseAttributes(attributes));
         }
 
-        void createAnnotationXmlElement(String ns, String tagName, String[] attributes, boolean flag) {
-            assert(attributes.length % 3 == 0);
-            System.out.println(String.format("createAnnotationXmlElement(%s, %s, %s, %b)",
-                    ns,
-                    tagName,
-                    Arrays.asList(attributes),
-                    flag));
-            //sink.createElement(ns, tagName, )
+        void createAnnotationXmlElement(String ns, String tagName, String[] attributes, boolean flag) { // TODO rename 'flag'
+            sink.createAnnotationXmlElement(ns, tagName, parseAttributes(attributes), flag);
         }
 
-        private static List<Map.Entry<String, String>> combineAttributes(String[] keys, String[] values) {
-            assert(keys.length == values.length);
-            if (keys.length == 0) {
+        private static List<Sink.Attribute> parseAttributes(String[] xs) {
+            assert (xs.length % 3 == 0);
+            if (xs.length == 0) {
                 return Collections.emptyList();
             }
-            List<Map.Entry<String, String>> attributes = new ArrayList<>();
-            for (int i=0; i<keys.length; ++i) {
-                attributes.add(new AbstractMap.SimpleEntry<>(keys[i], values[i]));
+            List<Sink.Attribute> attributes = new ArrayList<>();
+            for (int i = 0; i < xs.length; i += 3) {
+                attributes.add(new Sink.Attribute(xs[i], xs[i + 1], xs[i + 2]));
             }
             return attributes;
-        }
-
-        void goUp() {
-
         }
 
     }
