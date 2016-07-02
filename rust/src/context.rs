@@ -9,12 +9,14 @@ use html5ever::tree_builder::TreeBuilderOpts;
 use jni::{JObject,ObjectWrapper, box_to_jlong};
 
 use options::{TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,create_quirks_mode_wrapper,create_traversal_scope_wrapper};
+use callbacks::JavaCallbackClass;
 
 pub struct Context {
     tokenizer_options_wrapper: Rc<TokenizerOptionsWrapper>,
     tree_builder_options_wrapper: Rc<TreeBuilderOptionsWrapper>,
     serialize_options_wrapper: Rc<SerializeOptionsWrapper>,
     parse_options_wrapper: Rc<ParseOptionsWrapper>,
+    java_callback_class: Rc<JavaCallbackClass>,
 }
 
 // TODO rename to OptionsFromContext
@@ -70,6 +72,7 @@ impl Context {
             tree_builder_options_wrapper: tree_builder_options_wrapper.clone(),
             serialize_options_wrapper: Rc::new(try!(SerializeOptionsWrapper::load(jre, traversal_scope_wrapper))),
             parse_options_wrapper: Rc::new(try!(ParseOptionsWrapper::load(jre, tokenizer_options_wrapper, tree_builder_options_wrapper))),
+            java_callback_class: Rc::new(try!(JavaCallbackClass::load(jre)))
         });
     }
     

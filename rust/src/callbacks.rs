@@ -3,10 +3,12 @@ use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectarray};
 use algorithms::{Attribute,Callback};
 use libc::c_uint;
 
+static PACKAGE: &'static str = "com.github.foobar27.html5ever4j"; // TODO duplicate code
+
 // TODO create macro for the following structure:
 // (potentially with string/jboolean/... serialization?)
 
-struct JavaCallbackClass {
+pub struct JavaCallbackClass {
     string_class: JClass,
     set_doc_type_method: jmethodID,
     create_text_method: jmethodID,
@@ -32,6 +34,10 @@ impl JavaCallbackClass {
         })
     }
 
+    pub unsafe fn load(jre: *mut JNIEnv) -> Result<JavaCallbackClass, ()> {
+        return JavaCallbackClass::new(jre, try!(JClass::load(jre, PACKAGE, "Parser$CallBack")));
+    }
+    
     
 }
 
@@ -50,7 +56,7 @@ impl JavaCallbackObject {
             object: object,
         }
     }
-    
+
 }
 
 unsafe fn flatten_attributes(jre: *mut JNIEnv, attributes: &Vec<Attribute>) -> Vec<jobject> {
