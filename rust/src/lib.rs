@@ -11,6 +11,7 @@ mod jni;
 mod algorithms;
 mod options;
 mod callbacks;
+mod context;
 mod helper;
 
 use jni_sys::{jlong,jstring,jobject,jclass,JNIEnv};
@@ -22,7 +23,8 @@ use html5ever::tree_builder::TreeBuilderOpts;
 
 use jni::{ObjectWrapper, box_to_jlong, free_struct, string_to_jstring, jstring_to_string};
 
-use options::{Context,TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,FromContext,DebugString};
+use options::{TokenizerOptionsWrapper,TreeBuilderOptionsWrapper,SerializeOptionsWrapper,ParseOptionsWrapper,DebugString};
+use context::{Context,FromContext};
 
 // TODO simplify via macros
 
