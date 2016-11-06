@@ -1,12 +1,11 @@
 package com.github.foobar27.html5ever4j;
 
-import com.github.foobar27.html5ever4j.example.Node;
+import com.github.foobar27.html5ever4j.example.*;
 import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class Html5everTest {
@@ -22,50 +21,17 @@ public class Html5everTest {
 
     @Test
     public void parseShouldAddClosingTag() {
-        Html5ever.parse("<p id=\"1\" class=\"bold\">foo", ParseOptions.newBuilder().build(), new Sink<Node>() {
-            @Override
-            public Node setDocType(String name, String _public, String system) {
-                System.out.println(String.format("setDocType(%s,%s,%s)", name, _public, system));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createText(String text) {
-                System.out.println(String.format("createText(%s)", text));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createComment(String text) {
-                System.out.println(String.format("createComment(%s)", text));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createNormalElement(String ns, String tagName, List<Attribute> attributes) {
-                System.out.println(String.format("createNormalElement(%s, %s, %s)", ns, tagName, attributes));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createScriptElement(String ns, String tagName, List<Attribute> attributes, boolean alreadyStarted) {
-                System.out.println(String.format("createScriptElement(%s, %s, %s, %b)", ns, tagName, attributes, alreadyStarted));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createTemplateElement(String ns, String tagName, List<Attribute> attributes) {
-                System.out.println(String.format("createTemplateElement(%s, %s, %s)", ns, tagName, attributes));
-                return null; // TODO
-            }
-
-            @Override
-            public Node createAnnotationXmlElement(String ns, String tagName, List<Attribute> attributes, boolean flag) {
-                System.out.println(String.format("createAnnotationXmlElement(%s, %s, %s, %b)", ns, tagName, attributes, flag));
-                return null; // TODO
-            }
-
-        });
-        // TODO test something!
+        Node root = Html5ever.parse("<p id=\"1\" class=\"bold\">foo", ParseOptions.newBuilder().build(), NodeSink::new);
+        assertEquals("Element[http://www.w3.org/1999/xhtml,html,{},[Element[http://www.w3.org/1999/xhtml,head,{},[]], Element[http://www.w3.org/1999/xhtml,body,{},[Element[http://www.w3.org/1999/xhtml,p,{id=[1], class=[bold]},[Text[foo]]]]]]]",
+                root.toString());
     }
+
+    @Test
+    public void parseShouldNoMixUpNeighbours() {
+        Node root = Html5ever.parse("<ul><li>a1<li><li>b2<li></ul><ul><li>a1<li><li>b2<li></ul>", ParseOptions.newBuilder().build(), NodeSink::new);
+        System.out.println(root);
+        assertEquals("Element[http://www.w3.org/1999/xhtml,html,{},[Element[http://www.w3.org/1999/xhtml,head,{},[]], Element[http://www.w3.org/1999/xhtml,body,{},[Element[http://www.w3.org/1999/xhtml,ul,{},[Element[http://www.w3.org/1999/xhtml,li,{},[Text[a1]]], Element[http://www.w3.org/1999/xhtml,li,{},[]], Element[http://www.w3.org/1999/xhtml,li,{},[Text[b2]]], Element[http://www.w3.org/1999/xhtml,li,{},[]]]], Element[http://www.w3.org/1999/xhtml,ul,{},[Element[http://www.w3.org/1999/xhtml,li,{},[Text[a1]]], Element[http://www.w3.org/1999/xhtml,li,{},[]], Element[http://www.w3.org/1999/xhtml,li,{},[Text[b2]]], Element[http://www.w3.org/1999/xhtml,li,{},[]]]]]]]]",
+                root.toString());
+    }
+
 }

@@ -11,6 +11,7 @@ static PACKAGE: &'static str = "com.github.foobar27.html5ever4j"; // TODO duplic
 
 pub struct JavaCallbackClass {
     string_class: JClass,
+    pre_order_visit_method: jmethodID,
     set_doc_type_method: jmethodID,
     create_text_method: jmethodID,
     create_comment_method: jmethodID,
@@ -25,6 +26,7 @@ impl JavaCallbackClass {
     unsafe fn new(jre: *mut JNIEnv, class: JClass) -> Result<JavaCallbackClass, ()> {
         return Ok(JavaCallbackClass {
             string_class: try!(try!(JClass::load(jre, "java.lang", "String")).create_global_ref(jre)),
+            pre_order_visit_method: try!(class.get_method_id(jre, "preOrderVisit", "()V")),
             set_doc_type_method: try!(class.get_method_id(jre, "setDocType", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
             create_text_method: try!(class.get_method_id(jre, "createText", "(Ljava/lang/String;)V")),
             create_comment_method: try!(class.get_method_id(jre, "createComment", "(Ljava/lang/String;)V")),
@@ -72,6 +74,14 @@ unsafe fn flatten_attributes(jre: *mut JNIEnv, attributes: &Vec<Attribute>) -> V
 
 impl Callback for JavaCallbackObject {
 
+    fn pre_order_visit(&self) {
+        unsafe {
+            jni!(self.jre, CallVoidMethod,
+                 self.object.object,
+                 self.class.pre_order_visit_method);
+        }
+    }
+    
     fn set_doc_type(&self, name: String, public: String, system: String) {
         unsafe {
             jni!(self.jre, CallVoidMethod,

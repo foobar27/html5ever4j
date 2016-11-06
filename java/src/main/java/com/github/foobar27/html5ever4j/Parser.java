@@ -10,8 +10,8 @@ class Parser<N> {
         this.parseOptions = parseOptions;
     }
 
-    public void parse(String inputHtml, Sink<N> sink) {
-        Native.getInstance().parse(inputHtml, parseOptions, new CallBack(sink));
+    public void parse(String inputHtml, Visitor visitor) {
+        Native.getInstance().parse(inputHtml, parseOptions, new CallBack(visitor));
     }
 
     static class CallBack {
@@ -29,10 +29,10 @@ class Parser<N> {
         private static final int NODE_TYPE_ANNOTATION_XML_FALSE = 8; // TODO bad naming!
         private static final int NODE_TYPE_ANNOTATION_XML_TRUE = 9; // TODO bad naming!
 
-        final Sink<?> sink;
+        final Visitor visitor;
 
-        CallBack(Sink<?> sink) {
-            this.sink = sink;
+        CallBack(Visitor visitor) {
+            this.visitor = visitor;
         }
 
         // The type of a node.
@@ -46,42 +46,46 @@ class Parser<N> {
         // The text of a TEXT or COMMENT.
         String text;
 
+        void preOrderVisit() {
+            visitor.preOrderVisit();
+        }
+
         void setDocType(String name, String _public, String system) {
-            sink.setDocType(name, _public, system); // TODO result ignored
+            visitor.setDocType(name, _public, system); // TODO result ignored
         }
 
         void createText(String text) {
-            sink.createText(text); // TODO result ignored
+            visitor.createText(text); // TODO result ignored
         }
 
         void createComment(String comment) {
-            sink.createComment(comment); // TODO result ignored
+            visitor.createComment(comment); // TODO result ignored
         }
 
         void createNormalElement(String ns, String tagName, String[] attributes) {
-            sink.createNormalElement(ns, tagName, parseAttributes(attributes));
+            visitor.createNormalElement(ns, tagName, parseAttributes(attributes));
         }
 
         void createScriptElement(String ns, String tagName, String[] attributes, boolean alreadyStarted) {
-            sink.createScriptElement(ns, tagName, parseAttributes(attributes), alreadyStarted);
+            visitor.createScriptElement(ns, tagName, parseAttributes(attributes), alreadyStarted);
         }
 
         void createTemplateElement(String ns, String tagName, String[] attributes) {
-            sink.createTemplateElement(ns, tagName, parseAttributes(attributes));
+            visitor.createTemplateElement(ns, tagName, parseAttributes(attributes));
         }
 
         void createAnnotationXmlElement(String ns, String tagName, String[] attributes, boolean flag) { // TODO rename 'flag'
-            sink.createAnnotationXmlElement(ns, tagName, parseAttributes(attributes), flag);
+            visitor.createAnnotationXmlElement(ns, tagName, parseAttributes(attributes), flag);
         }
 
-        private static List<Sink.Attribute> parseAttributes(String[] xs) {
+        private static List<Visitor.Attribute> parseAttributes(String[] xs) {
             assert (xs.length % 3 == 0);
             if (xs.length == 0) {
                 return Collections.emptyList();
             }
-            List<Sink.Attribute> attributes = new ArrayList<>();
+            List<Visitor.Attribute> attributes = new ArrayList<>();
             for (int i = 0; i < xs.length; i += 3) {
-                attributes.add(new Sink.Attribute(xs[i], xs[i + 1], xs[i + 2]));
+                attributes.add(new Visitor.Attribute(xs[i], xs[i + 1], xs[i + 2]));
             }
             return attributes;
         }

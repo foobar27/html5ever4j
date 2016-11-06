@@ -27,7 +27,7 @@ class Native {
         return INSTANCE;
     }
 
-//    public static native void parse(String input, Sink output, ParseOptions options);
+//    public static native void parse(String input, Visitor output, ParseOptions options);
 //
 //    public static void parseFragment() {
 //

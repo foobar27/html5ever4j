@@ -36,6 +36,7 @@ pub struct Attribute {
 }
 
 pub trait Callback {
+    fn pre_order_visit(&self);
     fn set_doc_type(&self, name: String, public: String, system: String);
     fn create_text(&self, text: String);
     fn create_comment(&self, comment: String);
@@ -45,7 +46,27 @@ pub trait Callback {
     fn create_annotation_xml_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, b: bool);
 }
 
-fn visit<C: Callback>(node: &NodeEnum, callback: &C) {
+fn pre_visit<C: Callback>(node: &NodeEnum, callback: &C) {
+    match *node {
+        Document => {
+            // skip
+        },
+        Doctype(ref name, ref public, ref system) => {
+            // skip
+        },
+        Text(ref text) => {
+            // skip
+        },
+        Comment(ref text) => {
+            // skip
+        },
+        Element(ref name, ref element, ref attributes) => {
+            callback.pre_order_visit();
+        }
+    }
+}
+
+fn post_visit<C: Callback>(node: &NodeEnum, callback: &C) {
     match *node {
         Document => {
             // skip
@@ -88,10 +109,11 @@ fn visit<C: Callback>(node: &NodeEnum, callback: &C) {
 
 fn parse_rec<C: Callback>(handle: Handle, callback: &C) {
     let node = handle.borrow();
-    visit(&node.node, callback);
+    pre_visit(&node.node, callback);
     for child in node.children.iter() {
         parse_rec(child.clone(), callback);
     }
+    post_visit(&node.node, callback);
 }
 
 pub fn parse<C: Callback>(input: String, parse_opts: &ParseOpts, callback: &C) {
