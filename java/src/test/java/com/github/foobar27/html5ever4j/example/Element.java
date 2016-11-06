@@ -1,5 +1,8 @@
 package com.github.foobar27.html5ever4j.example;
 
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
+
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +38,34 @@ public class Element extends Node {
                 tag,
                 attributes,
                 getChildren());
+    }
+
+    @Override
+    public String toHtml() {
+        Escaper escaper = HtmlEscapers.htmlEscaper();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<");
+        sb.append(tag);
+        for (Map.Entry<String, List<String>> as : attributes.entrySet()) {
+            String key = as.getKey();
+            for (String value : as.getValue()) {
+                sb.append(" ");
+                sb.append(key);
+                sb.append("=\"");
+                escaper.escape(value);
+                sb.append("=\"");
+            }
+        }
+        sb.append(">");
+
+        for (Node child : getChildren()) {
+            sb.append(child.toHtml());
+        }
+
+        sb.append("</");
+        sb.append(tag);
+        sb.append(">");
+        return sb.toString();
     }
 
 }

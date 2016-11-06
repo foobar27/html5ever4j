@@ -16,4 +16,10 @@ public class Comment extends Node {
         return String.format("Comment[%s]", text);
     }
 
+    @Override
+    public String toHtml() {
+        return String.format("<!-- %s -->",
+                text.replaceAll("--", "__"));
+    }
+
 }

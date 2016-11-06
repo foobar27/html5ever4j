@@ -1,5 +1,7 @@
 package com.github.foobar27.html5ever4j.example;
 
+import com.google.common.html.HtmlEscapers;
+
 import java.util.Collections;
 
 public class Text extends Node {
@@ -8,12 +10,17 @@ public class Text extends Node {
 
     public Text(String text) {
         super(Collections.emptyList());
-        this.text = text;
+        this.text = text.trim();
     }
 
     @Override
     public String toString() {
         return String.format("Text[%s]", text);
+    }
+
+    @Override
+    public String toHtml() {
+        return HtmlEscapers.htmlEscaper().escape(text);
     }
 
 }

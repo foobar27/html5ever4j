@@ -29,9 +29,8 @@ public class Html5everTest {
     @Test
     public void parseShouldNoMixUpNeighbours() {
         Node root = Html5ever.parse("<ul><li>a1<li><li>a2<li></ul><ul><li>b1<li><li>b2<li></ul>", ParseOptions.newBuilder().build(), NodeSink::new);
-        System.out.println(root);
-        assertEquals("Element[http://www.w3.org/1999/xhtml,html,{},[Element[http://www.w3.org/1999/xhtml,head,{},[]], Element[http://www.w3.org/1999/xhtml,body,{},[Element[http://www.w3.org/1999/xhtml,ul,{},[Element[http://www.w3.org/1999/xhtml,li,{},[Text[a1]]], Element[http://www.w3.org/1999/xhtml,li,{},[]], Element[http://www.w3.org/1999/xhtml,li,{},[Text[a2]]], Element[http://www.w3.org/1999/xhtml,li,{},[]]]], Element[http://www.w3.org/1999/xhtml,ul,{},[Element[http://www.w3.org/1999/xhtml,li,{},[Text[b1]]], Element[http://www.w3.org/1999/xhtml,li,{},[]], Element[http://www.w3.org/1999/xhtml,li,{},[Text[b2]]], Element[http://www.w3.org/1999/xhtml,li,{},[]]]]]]]]",
-                root.toString());
+        assertEquals("<html><head></head><body><ul><li>a1</li><li></li><li>a2</li><li></li></ul><ul><li>b1</li><li></li><li>b2</li><li></li></ul></body></html>",
+                root.toHtml());
     }
-
+    
 }

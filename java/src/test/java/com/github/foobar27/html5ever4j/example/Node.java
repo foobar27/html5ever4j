@@ -13,4 +13,7 @@ public abstract class Node {
     public List<Node> getChildren() {
         return children;
     }
+
+    public abstract String toHtml();
+
 }
