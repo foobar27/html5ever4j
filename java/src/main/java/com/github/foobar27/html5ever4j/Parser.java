@@ -1,5 +1,6 @@
 package com.github.foobar27.html5ever4j;
 
+import com.github.foobar27.html5ever4j.atoms.LocalName;
 import com.github.foobar27.html5ever4j.atoms.Namespace;
 
 import java.util.*;
@@ -64,20 +65,33 @@ class Parser<N> {
             visitor.createComment(comment); // TODO result ignored
         }
 
-        void createNormalElement(int nsId, String nsString, String tagName, String[] attributes) {
-            visitor.createNormalElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes));
+        void createNormalElement(int nsId, String nsString, int tagId, String tagString, String[] attributes) {
+            visitor.createNormalElement(
+                    Namespace.getNamespace(nsId, nsString),
+                    LocalName.getLocalName(tagId, tagString),
+                    parseAttributes(attributes));
         }
 
-        void createScriptElement(int nsId, String nsString, String tagName, String[] attributes, boolean alreadyStarted) {
-            visitor.createScriptElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes), alreadyStarted);
+        void createScriptElement(int nsId, String nsString, int tagId, String tagString, String[] attributes, boolean alreadyStarted) {
+            visitor.createScriptElement(
+                    Namespace.getNamespace(nsId, nsString),
+                    LocalName.getLocalName(tagId, tagString),
+                    parseAttributes(attributes), alreadyStarted);
         }
 
-        void createTemplateElement(int nsId, String nsString, String tagName, String[] attributes) {
-            visitor.createTemplateElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes));
+        void createTemplateElement(int nsId, String nsString, int tagId, String tagString, String[] attributes) {
+            visitor.createTemplateElement(
+                    Namespace.getNamespace(nsId, nsString),
+                    LocalName.getLocalName(tagId, tagString),
+                    parseAttributes(attributes));
         }
 
-        void createAnnotationXmlElement(int nsId, String nsString, String tagName, String[] attributes, boolean flag) { // TODO rename 'flag'
-            visitor.createAnnotationXmlElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes), flag);
+        void createAnnotationXmlElement(int nsId, String nsString, int tagId, String tagString, String[] attributes, boolean flag) { // TODO rename 'flag'
+            visitor.createAnnotationXmlElement(
+                    Namespace.getNamespace(nsId, nsString),
+                    LocalName.getLocalName(tagId, tagString),
+                    parseAttributes(attributes),
+                    flag);
         }
 
         private static List<Visitor.Attribute> parseAttributes(String[] xs) {

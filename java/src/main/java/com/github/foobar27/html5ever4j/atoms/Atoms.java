@@ -1,8 +1,7 @@
 package com.github.foobar27.html5ever4j.atoms;
 
 import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class Atoms<A> {
 
@@ -21,6 +20,10 @@ public final class Atoms<A> {
             name2id.put(names[i], i);
             id2atom[i] = ctor.apply(i, names[i]);
         }
+    }
+
+    List<A> getAllAtoms() {
+        return Collections.unmodifiableList(Arrays.asList(id2atom));
     }
 
     public A getAtom(int id, String s) {
