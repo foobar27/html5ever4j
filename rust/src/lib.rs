@@ -3,11 +3,14 @@
 extern crate tendril;
 extern crate html5ever;
 
+#[macro_use] extern crate html5ever_atoms;
+
 extern crate libc;
 extern crate jni_sys;
 
 #[macro_use]
 mod jni;
+mod atoms;
 mod algorithms;
 mod options;
 mod callbacks;

@@ -9,6 +9,7 @@ crate-type = ["dylib"]
 
 [dependencies]
 html5ever = "*"
+html5ever-atoms = "*"
 string_cache = "*"
 tendril = "*"
 

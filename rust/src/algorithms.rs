@@ -11,6 +11,8 @@ use html5ever::serialize::SerializeOpts;
 
 use html5ever::{parse_document, serialize};
 
+use html5ever_atoms::Namespace;
+
 fn parse_string(input: String, opts: &ParseOpts) -> RcDom {
     return parse_document(RcDom::default(), opts.clone())
         .one(StrTendril::from_slice(&input).clone());
@@ -40,10 +42,10 @@ pub trait Callback {
     fn set_doc_type(&self, name: String, public: String, system: String);
     fn create_text(&self, text: String);
     fn create_comment(&self, comment: String);
-    fn create_normal_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>);
-    fn create_script_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, already_started: bool);
-    fn create_template_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>);
-    fn create_annotation_xml_element(&self, ns: String, tag_name: String, attributes: Vec<Attribute>, b: bool);
+    fn create_normal_element(&self, ns: &Namespace, tag_name: String, attributes: Vec<Attribute>);
+    fn create_script_element(&self, ns: &Namespace, tag_name: String, attributes: Vec<Attribute>, already_started: bool);
+    fn create_template_element(&self, ns: &Namespace, tag_name: String, attributes: Vec<Attribute>);
+    fn create_annotation_xml_element(&self, ns: &Namespace, tag_name: String, attributes: Vec<Attribute>, b: bool);
 }
 
 fn pre_visit<C: Callback>(node: &NodeEnum, callback: &C) {
@@ -81,7 +83,7 @@ fn post_visit<C: Callback>(node: &NodeEnum, callback: &C) {
             callback.create_comment(text.to_string());
         },
         Element(ref name, ref element, ref attributes) => {
-            let ns = name.ns.to_string();
+            let ref ns = name.ns;
             let tag_name = name.local.to_string();
             let mut attrs = Vec::<Attribute>::with_capacity(attributes.len());
             for attr in attributes.iter() {

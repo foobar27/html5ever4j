@@ -2,6 +2,7 @@ package com.github.foobar27.html5ever4j.example;
 
 import com.github.foobar27.html5ever4j.Sink;
 import com.github.foobar27.html5ever4j.Visitor;
+import com.github.foobar27.html5ever4j.atoms.Namespace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,23 +27,23 @@ public class NodeSink implements Sink<Node> {
     }
 
     @Override
-    public Node createNormalElement(String ns, String tagName, List<Visitor.Attribute> attributes, List<Node> children) {
-        return new Element(ns, tagName, convertAttributes(attributes), children);
+    public Node createNormalElement(Namespace ns, String tagName, List<Visitor.Attribute> attributes, List<Node> children) {
+        return new Element(ns.toString(), tagName, convertAttributes(attributes), children);
     }
 
     @Override
-    public Node createScriptElement(String ns, String tagName, List<Visitor.Attribute> attributes, boolean alreadyStarted, List<Node> children) {
-        return new ScriptElement(ns, tagName, convertAttributes(attributes), alreadyStarted, children);
+    public Node createScriptElement(Namespace ns, String tagName, List<Visitor.Attribute> attributes, boolean alreadyStarted, List<Node> children) {
+        return new ScriptElement(ns.toString(), tagName, convertAttributes(attributes), alreadyStarted, children);
     }
 
     @Override
-    public Node createTemplateElement(String ns, String tagName, List<Visitor.Attribute> attributes, List<Node> children) {
-        return new TemplateElement(ns, tagName, convertAttributes(attributes), children);
+    public Node createTemplateElement(Namespace ns, String tagName, List<Visitor.Attribute> attributes, List<Node> children) {
+        return new TemplateElement(ns.toString(), tagName, convertAttributes(attributes), children);
     }
 
     @Override
-    public Node createAnnotationXmlElement(String ns, String tagName, List<Visitor.Attribute> attributes, boolean flag, List<Node> children) {
-        return new AnnotationXmlElement(ns, tagName, convertAttributes(attributes), flag, children);
+    public Node createAnnotationXmlElement(Namespace ns, String tagName, List<Visitor.Attribute> attributes, boolean flag, List<Node> children) {
+        return new AnnotationXmlElement(ns.toString(), tagName, convertAttributes(attributes), flag, children);
     }
 
     private static Map<String, List<String>> convertAttributes(List<Visitor.Attribute> input) {

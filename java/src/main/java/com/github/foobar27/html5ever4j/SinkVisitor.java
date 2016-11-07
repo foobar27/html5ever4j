@@ -1,5 +1,7 @@
 package com.github.foobar27.html5ever4j;
 
+import com.github.foobar27.html5ever4j.atoms.Namespace;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -41,28 +43,28 @@ class SinkVisitor<N> implements Visitor {
     }
 
     @Override
-    public void createNormalElement(String ns, String tagName, List<Attribute> attributes) {
+    public void createNormalElement(Namespace ns, String tagName, List<Attribute> attributes) {
         List<N> children = childrenStack.pop();
         N newElement = sink.createNormalElement(ns, tagName, attributes, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createScriptElement(String ns, String tagName, List<Attribute> attributes, boolean alreadyStarted) {
+    public void createScriptElement(Namespace ns, String tagName, List<Attribute> attributes, boolean alreadyStarted) {
         List<N> children = childrenStack.pop();
         N newElement = sink.createScriptElement(ns, tagName, attributes, alreadyStarted, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createTemplateElement(String ns, String tagName, List<Attribute> attributes) {
+    public void createTemplateElement(Namespace ns, String tagName, List<Attribute> attributes) {
         List<N> children = childrenStack.pop();
         N newElement = sink.createTemplateElement(ns, tagName, attributes, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createAnnotationXmlElement(String ns, String tagName, List<Attribute> attributes, boolean flag) {
+    public void createAnnotationXmlElement(Namespace ns, String tagName, List<Attribute> attributes, boolean flag) {
         List<N> children = childrenStack.pop();
         N newElement = sink.createAnnotationXmlElement(ns, tagName, attributes, flag, children);
         childrenStack.peek().add(newElement);

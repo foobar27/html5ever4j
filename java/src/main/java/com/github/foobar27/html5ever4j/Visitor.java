@@ -1,5 +1,7 @@
 package com.github.foobar27.html5ever4j;
 
+import com.github.foobar27.html5ever4j.atoms.Namespace;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,10 +15,10 @@ public interface Visitor {
 
     void createText(String text);
     void createComment(String text);
-    void createNormalElement(String ns, String tagName, List<Attribute> attributes);
-    void createScriptElement(String ns, String tagName, List<Attribute> attributes, boolean alreadyStarted);
-    void createTemplateElement(String ns, String tagName, List<Attribute> attributes);
-    void createAnnotationXmlElement(String ns, String tagName, List<Attribute> attributes, boolean flag); // TODO rename 'flag'
+    void createNormalElement(Namespace ns, String tagName, List<Attribute> attributes);
+    void createScriptElement(Namespace ns, String tagName, List<Attribute> attributes, boolean alreadyStarted);
+    void createTemplateElement(Namespace ns, String tagName, List<Attribute> attributes);
+    void createAnnotationXmlElement(Namespace ns, String tagName, List<Attribute> attributes, boolean flag); // TODO rename 'flag'
 
     final class Attribute {
         private final String namespace;

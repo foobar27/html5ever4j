@@ -1,5 +1,7 @@
 package com.github.foobar27.html5ever4j;
 
+import com.github.foobar27.html5ever4j.atoms.Namespace;
+
 import java.util.*;
 
 class Parser<N> {
@@ -62,20 +64,20 @@ class Parser<N> {
             visitor.createComment(comment); // TODO result ignored
         }
 
-        void createNormalElement(String ns, String tagName, String[] attributes) {
-            visitor.createNormalElement(ns, tagName, parseAttributes(attributes));
+        void createNormalElement(int nsId, String nsString, String tagName, String[] attributes) {
+            visitor.createNormalElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes));
         }
 
-        void createScriptElement(String ns, String tagName, String[] attributes, boolean alreadyStarted) {
-            visitor.createScriptElement(ns, tagName, parseAttributes(attributes), alreadyStarted);
+        void createScriptElement(int nsId, String nsString, String tagName, String[] attributes, boolean alreadyStarted) {
+            visitor.createScriptElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes), alreadyStarted);
         }
 
-        void createTemplateElement(String ns, String tagName, String[] attributes) {
-            visitor.createTemplateElement(ns, tagName, parseAttributes(attributes));
+        void createTemplateElement(int nsId, String nsString, String tagName, String[] attributes) {
+            visitor.createTemplateElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes));
         }
 
-        void createAnnotationXmlElement(String ns, String tagName, String[] attributes, boolean flag) { // TODO rename 'flag'
-            visitor.createAnnotationXmlElement(ns, tagName, parseAttributes(attributes), flag);
+        void createAnnotationXmlElement(int nsId, String nsString, String tagName, String[] attributes, boolean flag) { // TODO rename 'flag'
+            visitor.createAnnotationXmlElement(Namespace.getNamespace(nsId, nsString), tagName, parseAttributes(attributes), flag);
         }
 
         private static List<Visitor.Attribute> parseAttributes(String[] xs) {
