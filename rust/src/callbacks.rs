@@ -4,7 +4,7 @@ use algorithms::{Attribute,Callback};
 use libc::c_uint;
 use std::rc::Rc;
 
-use html5ever_atoms::{LocalName, Namespace};
+use html5ever_atoms::QualName;
 use atoms::{translate_localname, translate_namespace};
     
 static PACKAGE: &'static str = "com.github.foobar27.html5ever4j"; // TODO duplicate code
@@ -114,9 +114,9 @@ impl Callback for JavaCallbackObject {
                                                       }
     }
    
-    fn create_normal_element(&self, ns: &Namespace, tag: &LocalName, attributes: Vec<Attribute>) {
-        let ns = translate_namespace(self.jre, ns);
-        let tag = translate_localname(self.jre, tag);
+    fn create_normal_element(&self, tag: &QualName, attributes: Vec<Attribute>) {
+        let ns = translate_namespace(self.jre, &tag.ns);
+        let tag = translate_localname(self.jre, &tag.local);
         unsafe {
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
@@ -134,10 +134,10 @@ impl Callback for JavaCallbackObject {
         }
     }
 
-    fn create_script_element(&self, ns: &Namespace, tag: &LocalName, attributes: Vec<Attribute>, already_started: bool) {
+    fn create_script_element(&self, tag: &QualName, attributes: Vec<Attribute>, already_started: bool) {
         let already_started: jboolean = if already_started {1} else {0};
-        let ns = translate_namespace(self.jre, ns);
-        let tag = translate_localname(self.jre, tag);
+        let ns = translate_namespace(self.jre, &tag.ns);
+        let tag = translate_localname(self.jre, &tag.local);
         unsafe {
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
@@ -151,9 +151,9 @@ impl Callback for JavaCallbackObject {
         }
     }
 
-    fn create_template_element(&self, ns: &Namespace, tag: &LocalName, attributes: Vec<Attribute>) {
-        let ns = translate_namespace(self.jre, ns);
-        let tag = translate_localname(self.jre, tag);
+    fn create_template_element(&self, tag: &QualName, attributes: Vec<Attribute>) {
+        let ns = translate_namespace(self.jre, &tag.ns);
+        let tag = translate_localname(self.jre, &tag.local);
         unsafe {
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
@@ -167,10 +167,10 @@ impl Callback for JavaCallbackObject {
         }
     }
 
-    fn create_annotation_xml_element(&self, ns: &Namespace, tag: &LocalName, attributes: Vec<Attribute>, b: bool) {
+    fn create_annotation_xml_element(&self, tag: &QualName, attributes: Vec<Attribute>, b: bool) {
         let b: jboolean = if b {1} else {0};
-        let ns = translate_namespace(self.jre, ns);
-        let tag = translate_localname(self.jre, tag);
+        let ns = translate_namespace(self.jre, &tag.ns);
+        let tag = translate_localname(self.jre, &tag.local);
         unsafe {
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
