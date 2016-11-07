@@ -2,6 +2,7 @@ package com.github.foobar27.html5ever4j;
 
 import com.github.foobar27.html5ever4j.atoms.LocalName;
 import com.github.foobar27.html5ever4j.atoms.Namespace;
+import com.github.foobar27.html5ever4j.atoms.QualName;
 
 import java.util.*;
 
@@ -72,8 +73,9 @@ class Parser<N> {
                                  int[] attrIds,
                                  String[] attrStrings) {
             visitor.createNormalElement(
-                    Namespace.getNamespace(nsId, nsString),
-                    LocalName.getLocalName(tagId, tagString),
+                    new QualName(
+                            Namespace.getNamespace(nsId, nsString),
+                            LocalName.getLocalName(tagId, tagString)),
                     parseAttributes(attrIds, attrStrings));
         }
 
@@ -85,8 +87,9 @@ class Parser<N> {
                                  String[] attrStrings,
                                  boolean alreadyStarted) {
             visitor.createScriptElement(
-                    Namespace.getNamespace(nsId, nsString),
-                    LocalName.getLocalName(tagId, tagString),
+                    new QualName(
+                            Namespace.getNamespace(nsId, nsString),
+                            LocalName.getLocalName(tagId, tagString)),
                     parseAttributes(attrIds, attrStrings), alreadyStarted);
         }
 
@@ -97,8 +100,9 @@ class Parser<N> {
                                    int[] attrIds,
                                    String[] attrStrings) {
             visitor.createTemplateElement(
-                    Namespace.getNamespace(nsId, nsString),
-                    LocalName.getLocalName(tagId, tagString),
+                    new QualName(
+                            Namespace.getNamespace(nsId, nsString),
+                            LocalName.getLocalName(tagId, tagString)),
                     parseAttributes(attrIds, attrStrings));
         }
 
@@ -110,8 +114,9 @@ class Parser<N> {
                                         String[] attrStrings,
                                         boolean flag) { // TODO rename 'flag'
             visitor.createAnnotationXmlElement(
-                    Namespace.getNamespace(nsId, nsString),
-                    LocalName.getLocalName(tagId, tagString),
+                    new QualName(
+                            Namespace.getNamespace(nsId, nsString),
+                            LocalName.getLocalName(tagId, tagString)),
                     parseAttributes(attrIds, attrStrings),
                     flag);
         }
@@ -147,7 +152,7 @@ class Parser<N> {
                 Namespace ns = Namespace.getNamespace(nsId, nsString);
                 LocalName key = LocalName.getLocalName(keyId, keyString);
 
-                attributes.add(new Visitor.Attribute(ns, key, value));
+                attributes.add(new Visitor.Attribute(new QualName(ns, key), value));
             }
             return attributes;
         }

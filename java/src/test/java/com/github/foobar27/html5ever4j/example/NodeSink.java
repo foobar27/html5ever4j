@@ -4,6 +4,7 @@ import com.github.foobar27.html5ever4j.Sink;
 import com.github.foobar27.html5ever4j.Visitor;
 import com.github.foobar27.html5ever4j.atoms.LocalName;
 import com.github.foobar27.html5ever4j.atoms.Namespace;
+import com.github.foobar27.html5ever4j.atoms.QualName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,37 +29,37 @@ public class NodeSink implements Sink<Node> {
     }
 
     @Override
-    public Node createNormalElement(Namespace ns, LocalName tag, List<Visitor.Attribute> attributes, List<Node> children) {
+    public Node createNormalElement(QualName name, List<Visitor.Attribute> attributes, List<Node> children) {
         return new Element(
-                ns.toString(),
-                tag.toString(),
+                name.getNamespace().toString(),
+                name.getLocalName().toString(),
                 convertAttributes(attributes),
                 children);
     }
 
     @Override
-    public Node createScriptElement(Namespace ns, LocalName tag, List<Visitor.Attribute> attributes, boolean alreadyStarted, List<Node> children) {
+    public Node createScriptElement(QualName name, List<Visitor.Attribute> attributes, boolean alreadyStarted, List<Node> children) {
         return new ScriptElement(
-                ns.toString(),
-                tag.toString(),
+                name.getNamespace().toString(),
+                name.getLocalName().toString(),
                 convertAttributes(attributes), alreadyStarted,
                 children);
     }
 
     @Override
-    public Node createTemplateElement(Namespace ns, LocalName tag, List<Visitor.Attribute> attributes, List<Node> children) {
+    public Node createTemplateElement(QualName name, List<Visitor.Attribute> attributes, List<Node> children) {
         return new TemplateElement(
-                ns.toString(),
-                tag.toString(),
+                name.getNamespace().toString(),
+                name.getLocalName().toString(),
                 convertAttributes(attributes),
                 children);
     }
 
     @Override
-    public Node createAnnotationXmlElement(Namespace ns, LocalName tag, List<Visitor.Attribute> attributes, boolean flag, List<Node> children) {
+    public Node createAnnotationXmlElement(QualName name, List<Visitor.Attribute> attributes, boolean flag, List<Node> children) {
         return new AnnotationXmlElement(
-                ns.toString(),
-                tag.toString(),
+                name.getNamespace().toString(),
+                name.getLocalName().toString(),
                 convertAttributes(attributes),
                 flag,
                 children);
@@ -68,10 +69,10 @@ public class NodeSink implements Sink<Node> {
         // TODO should not ignore ns
         Map<String, List<String>> output = new HashMap<>();
         for (Visitor.Attribute a : input) {
-            List<String> values = output.get(a.getKey().toString());
+            List<String> values = output.get(a.getKey().getLocalName().toString());
             if (values == null) {
                 values = new ArrayList<>();
-                output.put(a.getKey().toString(), values);
+                output.put(a.getKey().getLocalName().toString(), values);
             }
             values.add(a.getValue());
         }

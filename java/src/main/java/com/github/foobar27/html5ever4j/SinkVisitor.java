@@ -1,7 +1,6 @@
 package com.github.foobar27.html5ever4j;
 
-import com.github.foobar27.html5ever4j.atoms.LocalName;
-import com.github.foobar27.html5ever4j.atoms.Namespace;
+import com.github.foobar27.html5ever4j.atoms.QualName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,30 +43,30 @@ class SinkVisitor<N> implements Visitor {
     }
 
     @Override
-    public void createNormalElement(Namespace ns, LocalName tag, List<Attribute> attributes) {
+    public void createNormalElement(QualName name, List<Attribute> attributes) {
         List<N> children = childrenStack.pop();
-        N newElement = sink.createNormalElement(ns, tag, attributes, children);
+        N newElement = sink.createNormalElement(name, attributes, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createScriptElement(Namespace ns, LocalName tag, List<Attribute> attributes, boolean alreadyStarted) {
+    public void createScriptElement(QualName name, List<Attribute> attributes, boolean alreadyStarted) {
         List<N> children = childrenStack.pop();
-        N newElement = sink.createScriptElement(ns, tag, attributes, alreadyStarted, children);
+        N newElement = sink.createScriptElement(name, attributes, alreadyStarted, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createTemplateElement(Namespace ns, LocalName tag, List<Attribute> attributes) {
+    public void createTemplateElement(QualName name, List<Attribute> attributes) {
         List<N> children = childrenStack.pop();
-        N newElement = sink.createTemplateElement(ns, tag, attributes, children);
+        N newElement = sink.createTemplateElement(name, attributes, children);
         childrenStack.peek().add(newElement);
     }
 
     @Override
-    public void createAnnotationXmlElement(Namespace ns, LocalName tag, List<Attribute> attributes, boolean flag) {
+    public void createAnnotationXmlElement(QualName name, List<Attribute> attributes, boolean flag) {
         List<N> children = childrenStack.pop();
-        N newElement = sink.createAnnotationXmlElement(ns, tag, attributes, flag, children);
+        N newElement = sink.createAnnotationXmlElement(name, attributes, flag, children);
         childrenStack.peek().add(newElement);
     }
 
