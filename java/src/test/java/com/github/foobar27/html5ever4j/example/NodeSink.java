@@ -68,10 +68,10 @@ public class NodeSink implements Sink<Node> {
         // TODO should not ignore ns
         Map<String, List<String>> output = new HashMap<>();
         for (Visitor.Attribute a : input) {
-            List<String> values = output.get(a.getKey());
+            List<String> values = output.get(a.getKey().toString());
             if (values == null) {
                 values = new ArrayList<>();
-                output.put(a.getKey(), values);
+                output.put(a.getKey().toString(), values);
             }
             values.add(a.getValue());
         }

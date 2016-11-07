@@ -22,11 +22,11 @@ public interface Visitor {
     void createAnnotationXmlElement(Namespace ns, LocalName tagName, List<Attribute> attributes, boolean flag); // TODO rename 'flag'
 
     final class Attribute {
-        private final String namespace;
-        private final String key;
+        private final Namespace namespace;
+        private final LocalName key;
         private final String value;
 
-        public Attribute(String namespace, String key, String value) {
+        public Attribute(Namespace namespace, LocalName key, String value) {
             this.namespace = namespace;
             this.key = key;
             this.value = value;
@@ -37,11 +37,11 @@ public interface Visitor {
             return String.format("Attribute[ns=%s,key=%s,value=%s]", namespace, key, value);
         }
 
-        public String getNamespace() {
+        public Namespace getNamespace() {
             return namespace;
         }
 
-        public String getKey() {
+        public LocalName getKey() {
             return key;
         }
 

@@ -1,10 +1,12 @@
-use jni_sys::{jmethodID, jobject, jboolean, JNIEnv};
-use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectarray};
-use algorithms::{Attribute,Callback};
+use jni_sys::{jmethodID, jobject, jboolean, jintArray, jobjectArray, JNIEnv};
+use jni::{JObject, JClass, string_to_jstring, jobject_vec_to_jobjectArray, i32_vec_to_jintArray};
+use algorithms::Callback;
 use libc::c_uint;
 use std::rc::Rc;
+use std::ptr;
 
 use html5ever_atoms::QualName;
+use html5ever::tokenizer::Attribute;
 use atoms::{translate_localname, translate_namespace};
     
 static PACKAGE: &'static str = "com.github.foobar27.html5ever4j"; // TODO duplicate code
@@ -33,10 +35,10 @@ impl JavaCallbackClass {
             set_doc_type_method: try!(class.get_method_id(jre, "setDocType", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V")),
             create_text_method: try!(class.get_method_id(jre, "createText", "(Ljava/lang/String;)V")),
             create_comment_method: try!(class.get_method_id(jre, "createComment", "(Ljava/lang/String;)V")),
-            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement", "(ILjava/lang/String;ILjava/lang/String;[Ljava/lang/String;)V")),
-            create_script_element_method: try!(class.get_method_id(jre, "createScriptElement", "(ILjava/lang/String;ILjava/lang/String;[Ljava/lang/String;Z)V")),
-            create_template_element_method: try!(class.get_method_id(jre, "createTemplateElement", "(ILjava/lang/String;ILjava/lang/String;[Ljava/lang/String;)V")),
-            create_annotation_xml_element_method: try!(class.get_method_id(jre, "createAnnotationXmlElement", "(ILjava/lang/String;ILjava/lang/String;[Ljava/lang/String;Z)V")),
+            create_normal_element_method: try!(class.get_method_id(jre, "createNormalElement", "(ILjava/lang/String;ILjava/lang/String;[I[Ljava/lang/String;)V")),
+            create_script_element_method: try!(class.get_method_id(jre, "createScriptElement", "(ILjava/lang/String;ILjava/lang/String;[I[Ljava/lang/String;Z)V")),
+            create_template_element_method: try!(class.get_method_id(jre, "createTemplateElement", "(ILjava/lang/String;ILjava/lang/String;[I[Ljava/lang/String;)V")),
+            create_annotation_xml_element_method: try!(class.get_method_id(jre, "createAnnotationXmlElement", "(ILjava/lang/String;ILjava/lang/String;[I[Ljava/lang/String;Z)V")),
         })
     }
 
@@ -65,14 +67,47 @@ impl JavaCallbackObject {
 
 }
 
-unsafe fn flatten_attributes(jre: *mut JNIEnv, attributes: &Vec<Attribute>) -> Vec<jobject> {
-    let mut flat_attributes = Vec::<jobject>::new();
-    for a in attributes {
-        flat_attributes.push(string_to_jstring(jre, a.ns.clone())); // TODO remove clone!
-        flat_attributes.push(string_to_jstring(jre, a.key.clone())); // TODO remove clone!
-        flat_attributes.push(string_to_jstring(jre, a.value.clone())); // TODO remove clone!
+struct Attributes {
+    ids: jintArray,
+    strings: jobjectArray
+}
+
+unsafe fn flatten_attributes(jre: *mut JNIEnv,
+                             string_class: JClass,
+                             attributes: &Vec<Attribute>) -> Attributes {
+    if attributes.is_empty() {
+        return Attributes {
+            ids: ptr::null_mut(),
+            strings: ptr::null_mut(),
+        };
     }
-    return flat_attributes;
+    let mut ids = Vec::<i32>::new();
+    let mut strings = Vec::<jobject>::new();
+    for a in attributes {
+        let ns = translate_namespace(jre, &a.name.ns);
+        let key = translate_localname(jre, &a.name.local);
+        ids.push(ns.id);
+        ids.push(key.id);
+        if ns.id < 0 {
+            strings.push(ns.string);
+        }
+        if key.id < 0 {
+            strings.push(key.string);
+        }
+        strings.push(string_to_jstring(jre, a.value.clone())); // TODO remove clone!
+    }
+
+    return Attributes {
+        ids: i32_vec_to_jintArray(
+            jre,
+            &ids)
+            .unwrap(),
+        strings: jobject_vec_to_jobjectArray(
+            jre,
+            &strings,
+            string_class.clone())
+            .unwrap(), // TODO dangerous unwrap
+    };
 }
 
 impl Callback for JavaCallbackObject {
@@ -114,10 +149,14 @@ impl Callback for JavaCallbackObject {
                                                       }
     }
    
-    fn create_normal_element(&self, tag: &QualName, attributes: Vec<Attribute>) {
+    fn create_normal_element(&self, tag: &QualName, attributes: &Vec<Attribute>) {
         let ns = translate_namespace(self.jre, &tag.ns);
         let tag = translate_localname(self.jre, &tag.local);
         unsafe {
+            let attributes = flatten_attributes(
+                self.jre,
+                self.class.string_class.clone(),
+                attributes);
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
                  self.class.create_normal_element_method,
@@ -125,20 +164,20 @@ impl Callback for JavaCallbackObject {
                  ns.string,
                  tag.id,
                  tag.string,
-                 jobject_vec_to_jobjectarray(
-                     self.jre,
-                     &flatten_attributes(self.jre, &attributes),
-                     self.class.string_class.clone())
-            .unwrap());
-            // TODO dangerous unwrap
+                 attributes.ids,
+                 attributes.strings);
         }
     }
 
-    fn create_script_element(&self, tag: &QualName, attributes: Vec<Attribute>, already_started: bool) {
+    fn create_script_element(&self, tag: &QualName, attributes: &Vec<Attribute>, already_started: bool) {
         let already_started: jboolean = if already_started {1} else {0};
         let ns = translate_namespace(self.jre, &tag.ns);
         let tag = translate_localname(self.jre, &tag.local);
         unsafe {
+            let attributes = flatten_attributes(
+                self.jre,
+                self.class.string_class.clone(),
+                attributes);
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
                  self.class.create_script_element_method,
@@ -146,15 +185,20 @@ impl Callback for JavaCallbackObject {
                  ns.string,
                  tag.id,
                  tag.string,
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap(), // TODO dangerous unwrap
+                 attributes.ids,
+                 attributes.strings,
                  already_started as c_uint);
         }
     }
 
-    fn create_template_element(&self, tag: &QualName, attributes: Vec<Attribute>) {
+    fn create_template_element(&self, tag: &QualName, attributes: &Vec<Attribute>) {
         let ns = translate_namespace(self.jre, &tag.ns);
         let tag = translate_localname(self.jre, &tag.local);
         unsafe {
+            let attributes = flatten_attributes(
+                self.jre,
+                self.class.string_class.clone(),
+                attributes);
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
                  self.class.create_template_element_method,
@@ -162,16 +206,20 @@ impl Callback for JavaCallbackObject {
                  ns.string,
                  tag.id,
                  tag.string,
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap());
-            // TODO dangerous unwrap
+                 attributes.ids,
+                 attributes.strings);
         }
     }
 
-    fn create_annotation_xml_element(&self, tag: &QualName, attributes: Vec<Attribute>, b: bool) {
+    fn create_annotation_xml_element(&self, tag: &QualName, attributes: &Vec<Attribute>, b: bool) {
         let b: jboolean = if b {1} else {0};
         let ns = translate_namespace(self.jre, &tag.ns);
         let tag = translate_localname(self.jre, &tag.local);
         unsafe {
+            let attributes = flatten_attributes(
+                self.jre,
+                self.class.string_class.clone(),
+                attributes);
             jni!(self.jre, CallVoidMethod,
                  self.object.object,
                  self.class.create_annotation_xml_element_method,
@@ -179,7 +227,8 @@ impl Callback for JavaCallbackObject {
                  ns.string,
                  tag.id,
                  tag.string,
-                 jobject_vec_to_jobjectarray(self.jre, &flatten_attributes(self.jre, &attributes), self.class.string_class.clone()).unwrap(), // TODO dangerous unwrap
+                 attributes.ids,
+                 attributes.strings,
                  b as c_uint);
         }
     }

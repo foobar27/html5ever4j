@@ -1,6 +1,6 @@
 use std::ptr;
 use std::rc::Rc;
-use jni_sys::{jlong,jint,jstring,jclass,jobject,jmethodID,jfieldID,jobjectArray,JNIEnv};
+use jni_sys::{jlong,jint,jstring,jclass,jobject,jmethodID,jfieldID,jobjectArray,jintArray,JNIEnv};
 use std::collections::HashMap;
 use std::marker::PhantomData;
 
@@ -47,7 +47,7 @@ pub unsafe fn string_to_jstring<S>(jre: *mut JNIEnv, s: S) -> jstring
     return jni!(jre, NewStringUTF, to_ptr(s));
 }
 
-pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: &Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
+pub unsafe fn jobject_vec_to_jobjectArray(jre: *mut JNIEnv, items: &Vec<jobject>, item_class: JClass) -> Result<jobjectArray, ()> {
     let jni_result = jni!(jre, NewObjectArray, items.len() as i32, item_class.class, ptr::null_mut());
     if jni_result.is_null() {
         return Err(())
@@ -55,6 +55,15 @@ pub unsafe fn jobject_vec_to_jobjectarray(jre: *mut JNIEnv, items: &Vec<jobject>
     for (index, item) in items.iter().enumerate() {
         jni!(jre, SetObjectArrayElement, jni_result, index as i32, *item);
     }
+    return Ok(jni_result);
+}
+
+pub unsafe fn i32_vec_to_jintArray(jre: *mut JNIEnv, items: &Vec<i32>) -> Result<jintArray, ()> {
+    let jni_result = jni!(jre, NewIntArray, items.len() as i32);
+    if jni_result.is_null() {
+        return Err(());
+    }
+    jni!(jre, SetIntArrayRegion, jni_result, 0 as i32, items.len() as i32, items.as_ptr());
     return Ok(jni_result);
 }
 

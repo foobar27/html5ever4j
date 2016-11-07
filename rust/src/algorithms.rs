@@ -12,6 +12,7 @@ use html5ever::serialize::SerializeOpts;
 use html5ever::{parse_document, serialize};
 
 use html5ever_atoms::QualName;
+use html5ever::tokenizer::Attribute;
 
 fn parse_string(input: String, opts: &ParseOpts) -> RcDom {
     return parse_document(RcDom::default(), opts.clone())
@@ -31,21 +32,15 @@ pub fn html2html(input: String, parse_opts: &ParseOpts, serialize_opts: &Seriali
     };
 }
 
-pub struct Attribute {
-    pub ns: String,
-    pub key: String,
-    pub value: String,
-}
-
 pub trait Callback {
     fn pre_order_visit(&self);
     fn set_doc_type(&self, name: String, public: String, system: String);
     fn create_text(&self, text: String);
     fn create_comment(&self, comment: String);
-    fn create_normal_element(&self, tag: &QualName, attributes: Vec<Attribute>);
-    fn create_script_element(&self, tag: &QualName, attributes: Vec<Attribute>, already_started: bool);
-    fn create_template_element(&self, tag: &QualName, attributes: Vec<Attribute>);
-    fn create_annotation_xml_element(&self, tag: &QualName, attributes: Vec<Attribute>, b: bool);
+    fn create_normal_element(&self, tag: &QualName, attributes: &Vec<Attribute>);
+    fn create_script_element(&self, tag: &QualName, attributes: &Vec<Attribute>, already_started: bool);
+    fn create_template_element(&self, tag: &QualName, attributes: &Vec<Attribute>);
+    fn create_annotation_xml_element(&self, tag: &QualName, attributes: &Vec<Attribute>, b: bool);
 }
 
 fn pre_visit<C: Callback>(node: &NodeEnum, callback: &C) {
@@ -83,25 +78,17 @@ fn post_visit<C: Callback>(node: &NodeEnum, callback: &C) {
             callback.create_comment(text.to_string());
         },
         Element(ref name, ref element, ref attributes) => {
-            let mut attrs = Vec::<Attribute>::with_capacity(attributes.len());
-            for attr in attributes.iter() {
-                attrs.push(Attribute {
-                    ns: attr.name.ns.to_string(),
-                    key: attr.name.local.to_string(),
-                    value: attr.value.to_string(),
-                });
-            }
             match *element {
                 Normal => 
-                    callback.create_normal_element(name, attrs),
+                    callback.create_normal_element(name, attributes),
                 Script(already_started) =>
-                    callback.create_script_element(name, attrs, already_started),
+                    callback.create_script_element(name, attributes, already_started),
                 Template(_) => {
                     // TODO argument ignored!
-                    callback.create_template_element(name, attrs);
+                    callback.create_template_element(name, attributes);
                 },
                 AnnotationXml(b) =>
-                    callback.create_annotation_xml_element(name, attrs, b),
+                    callback.create_annotation_xml_element(name, attributes, b),
             }
         }
     }

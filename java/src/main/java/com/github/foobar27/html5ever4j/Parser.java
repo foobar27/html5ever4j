@@ -65,43 +65,89 @@ class Parser<N> {
             visitor.createComment(comment); // TODO result ignored
         }
 
-        void createNormalElement(int nsId, String nsString, int tagId, String tagString, String[] attributes) {
+        void createNormalElement(int nsId,
+                                 String nsString,
+                                 int tagId,
+                                 String tagString,
+                                 int[] attrIds,
+                                 String[] attrStrings) {
             visitor.createNormalElement(
                     Namespace.getNamespace(nsId, nsString),
                     LocalName.getLocalName(tagId, tagString),
-                    parseAttributes(attributes));
+                    parseAttributes(attrIds, attrStrings));
         }
 
-        void createScriptElement(int nsId, String nsString, int tagId, String tagString, String[] attributes, boolean alreadyStarted) {
+        void createScriptElement(int nsId,
+                                 String nsString,
+                                 int tagId,
+                                 String tagString,
+                                 int[] attrIds,
+                                 String[] attrStrings,
+                                 boolean alreadyStarted) {
             visitor.createScriptElement(
                     Namespace.getNamespace(nsId, nsString),
                     LocalName.getLocalName(tagId, tagString),
-                    parseAttributes(attributes), alreadyStarted);
+                    parseAttributes(attrIds, attrStrings), alreadyStarted);
         }
 
-        void createTemplateElement(int nsId, String nsString, int tagId, String tagString, String[] attributes) {
+        void createTemplateElement(int nsId,
+                                   String nsString,
+                                   int tagId,
+                                   String tagString,
+                                   int[] attrIds,
+                                   String[] attrStrings) {
             visitor.createTemplateElement(
                     Namespace.getNamespace(nsId, nsString),
                     LocalName.getLocalName(tagId, tagString),
-                    parseAttributes(attributes));
+                    parseAttributes(attrIds, attrStrings));
         }
 
-        void createAnnotationXmlElement(int nsId, String nsString, int tagId, String tagString, String[] attributes, boolean flag) { // TODO rename 'flag'
+        void createAnnotationXmlElement(int nsId,
+                                        String nsString,
+                                        int tagId,
+                                        String tagString,
+                                        int[] attrIds,
+                                        String[] attrStrings,
+                                        boolean flag) { // TODO rename 'flag'
             visitor.createAnnotationXmlElement(
                     Namespace.getNamespace(nsId, nsString),
                     LocalName.getLocalName(tagId, tagString),
-                    parseAttributes(attributes),
+                    parseAttributes(attrIds, attrStrings),
                     flag);
         }
 
-        private static List<Visitor.Attribute> parseAttributes(String[] xs) {
-            assert (xs.length % 3 == 0);
-            if (xs.length == 0) {
+        private static List<Visitor.Attribute> parseAttributes(int[] ids, String[] strings) {
+            if (ids == null) {
                 return Collections.emptyList();
             }
-            List<Visitor.Attribute> attributes = new ArrayList<>();
-            for (int i = 0; i < xs.length; i += 3) {
-                attributes.add(new Visitor.Attribute(xs[i], xs[i + 1], xs[i + 2]));
+            assert (ids.length % 2 == 0);
+            if (ids.length == 0) {
+                return Collections.emptyList();
+            }
+            List<Visitor.Attribute> attributes = new ArrayList<>(ids.length / 2);
+            int j = 0;
+            for (int i = 0; i < ids.length; i += 2) {
+                int nsId = ids[i];
+                String nsString = null;
+                if (nsId < 0) {
+                    nsString = strings[j];
+                    j++;
+                }
+
+                int keyId = ids[i + 1];
+                String keyString = null;
+                if (keyId < 0) {
+                    keyString = strings[j];
+                    j++;
+                }
+
+                String value = strings[j];
+                j++;
+
+                Namespace ns = Namespace.getNamespace(nsId, nsString);
+                LocalName key = LocalName.getLocalName(keyId, keyString);
+
+                attributes.add(new Visitor.Attribute(ns, key, value));
             }
             return attributes;
         }
