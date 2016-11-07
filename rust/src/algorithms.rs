@@ -81,12 +81,12 @@ fn post_visit<C: Callback>(node: &NodeEnum, callback: &C) {
             callback.create_comment(text.to_string());
         },
         Element(ref name, ref element, ref attributes) => {
-            let ns = name.ns.0.to_string();
+            let ns = name.ns.to_string();
             let tag_name = name.local.to_string();
             let mut attrs = Vec::<Attribute>::with_capacity(attributes.len());
             for attr in attributes.iter() {
                 attrs.push(Attribute {
-                    ns: attr.name.ns.0.to_string(),
+                    ns: attr.name.ns.to_string(),
                     key: attr.name.local.to_string(),
                     value: attr.value.to_string(),
                 });
