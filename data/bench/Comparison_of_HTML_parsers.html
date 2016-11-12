@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Comparison of HTML parsers - Wikipedia</title>
+<script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Comparison_of_HTML_parsers","wgTitle":"Comparison of HTML parsers","wgCurRevisionId":748846956,"wgRevisionId":748846956,"wgArticleId":36625178,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Articles needing additional references from May 2015","All articles needing additional references","Articles that may contain original research from May 2015","All articles that may contain original research","HTML parsers","Software comparisons"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Comparison_of_HTML_parsers","wgRelevantArticleId":36625178,"wgRequestId":"WCTEOApAMCYAAEDQsIQAAAAN","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgFlaggedRevsParams":{"tags":{"status":{"levels":1,"quality":2,"pristine":3}}},"wgStableRevisionId":null,"wgWikiEditorEnabledModules":{"toolbar":true,"dialogs":true,"preview":false,"publish":false},"wgBetaFeaturesFeatures":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","usePageImages":true,"usePageDescriptions":true},"wgPreferredVariant":"en","wgMFDisplayWikibaseDescriptions":{"search":true,"nearby":true,"watchlist":true,"tagline":false},"wgRelatedArticles":null,"wgRelatedArticlesUseCirrusSearch":true,"wgRelatedArticlesOnlyUseCirrusSearch":false,"wgULSCurrentAutonym":"English","wgNoticeProject":"wikipedia","wgCentralNoticeCookiesToDelete":[],"wgCentralNoticeCategoriesUsingLegacy":["Fundraising","fundraising"],"wgCategoryTreePageCategoryOptions":"{\"mode\":0,\"hideprefix\":20,\"showcount\":true,\"namespaces\":false}","wgWikibaseItemId":"Q5155729","wgCentralAuthMobileDomain":false,"wgVisualEditorToolbarScrollOffset":0,"wgEditSubmitButtonLabelPublish":false});mw.loader.state({"ext.globalCssJs.user.styles":"ready","ext.globalCssJs.site.styles":"ready","site.styles":"ready","noscript":"ready","user.styles":"ready","user.cssprefs":"ready","user":"ready","user.options":"loading","user.tokens":"loading","ext.cite.styles":"ready","wikibase.client.init":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","ext.wikimediaBadges":"ready","mediawiki.legacy.shared":"ready","mediawiki.legacy.commonPrint":"ready","mediawiki.sectionAnchor":"ready","mediawiki.skinning.interface":"ready","skins.vector.styles":"ready","ext.globalCssJs.user":"ready","ext.globalCssJs.site":"ready"});mw.loader.implement("user.options@0j3lz3q",function($,jQuery,require,module){mw.user.options.set({"variant":"en"});});mw.loader.implement("user.tokens@1dqfd7l",function ( $, jQuery, require, module ) {
+mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});/*@nomin*/;
+
+});mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","ext.centralauth.centralautologin","mmv.head","ext.visualEditor.desktopArticleTarget.init","ext.uls.interface","ext.quicksurveys.init","skins.vector.js"]);});</script>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=en&amp;modules=ext.cite.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Cmediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.sectionAnchor%7Cmediawiki.skinning.interface%7Cskins.vector.styles%7Cwikibase.client.init&amp;only=styles&amp;skin=vector"/>
+<script async="" src="/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=vector"></script>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="/w/load.php?debug=false&amp;lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector"/>
+<meta name="generator" content="MediaWiki 1.29.0-wmf.1"/>
+<meta name="referrer" content="origin-when-cross-origin"/>
+<link rel="alternate" href="android-app://org.wikipedia/http/en.m.wikipedia.org/wiki/Comparison_of_HTML_parsers"/>
+<link rel="alternate" type="application/x-wiki" title="Edit this page" href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit"/>
+<link rel="edit" title="Edit this page" href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit"/>
+<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png"/>
+<link rel="shortcut icon" href="/static/favicon/wikipedia.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikipedia (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="//en.wikipedia.org/w/api.php?action=rsd"/>
+<link rel="copyright" href="//creativecommons.org/licenses/by-sa/3.0/"/>
+<link rel="canonical" href="https://en.wikipedia.org/wiki/Comparison_of_HTML_parsers"/>
+<link rel="dns-prefetch" href="//login.wikimedia.org"/>
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Comparison_of_HTML_parsers rootpage-Comparison_of_HTML_parsers skin-vector action-view">		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+
+							<div id="siteNotice"><!-- CentralNotice --></div>
+						<div class="mw-indicators">
+</div>
+			<h1 id="firstHeading" class="firstHeading" lang="en">Comparison of HTML parsers</h1>
+									<div id="bodyContent" class="mw-body-content">
+									<div id="siteSub">From Wikipedia, the free encyclopedia</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					Jump to:					<a href="#mw-head">navigation</a>, 					<a href="#p-search">search</a>
+				</div>
+				<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><table class="plainlinks metadata ambox ambox-content ambox-Refimprove" role="presentation">
+<tr>
+<td class="mbox-image">
+<div style="width:52px"><a href="/wiki/File:Question_book-new.svg" class="image"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/50px-Question_book-new.svg.png" width="50" height="39" srcset="//upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/75px-Question_book-new.svg.png 1.5x, //upload.wikimedia.org/wikipedia/en/thumb/9/99/Question_book-new.svg/100px-Question_book-new.svg.png 2x" data-file-width="512" data-file-height="399" /></a></div>
+</td>
+<td class="mbox-text"><span class="mbox-text-span">This article <b>needs additional citations for <a href="/wiki/Wikipedia:Verifiability" title="Wikipedia:Verifiability">verification</a></b>. <span class="hide-when-compact">Please help <a class="external text" href="//en.wikipedia.org/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit">improve this article</a> by <a href="/wiki/Help:Introduction_to_referencing_with_Wiki_Markup/1" title="Help:Introduction to referencing with Wiki Markup/1">adding citations to reliable sources</a>. Unsourced material may be challenged and removed.</span> <small><i>(May 2015)</i></small> <small class="hide-when-compact"><i>(<a href="/wiki/Help:Maintenance_template_removal" title="Help:Maintenance template removal">Learn how and when to remove this template message</a>)</i></small></span></td>
+</tr>
+</table>
+<table class="plainlinks metadata ambox ambox-content ambox-Original_research" role="presentation">
+<tr>
+<td class="mbox-image">
+<div style="width:52px"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Ambox_important.svg/40px-Ambox_important.svg.png" width="40" height="40" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Ambox_important.svg/60px-Ambox_important.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Ambox_important.svg/80px-Ambox_important.svg.png 2x" data-file-width="40" data-file-height="40" /></div>
+</td>
+<td class="mbox-text"><span class="mbox-text-span">This article <b>possibly contains <a href="/wiki/Wikipedia:No_original_research" title="Wikipedia:No original research">original research</a></b>. <span class="hide-when-compact">Please <a class="external text" href="//en.wikipedia.org/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit">improve it</a> by <a href="/wiki/Wikipedia:Verifiability" title="Wikipedia:Verifiability">verifying</a> the claims made and adding <a href="/wiki/Wikipedia:Citing_sources#Inline_citations" title="Wikipedia:Citing sources">inline citations</a>. Statements consisting only of original research should be removed.</span> <small><i>(May 2015)</i></small> <small class="hide-when-compact"><i>(<a href="/wiki/Help:Maintenance_template_removal" title="Help:Maintenance template removal">Learn how and when to remove this template message</a>)</i></small></span></td>
+</tr>
+</table>
+<p><b>HTML parsers</b> are software for automated <a href="/wiki/Hypertext_Markup_Language" class="mw-redirect" title="Hypertext Markup Language">Hypertext Markup Language</a> (HTML) <a href="/wiki/Parsing" title="Parsing">parsing</a>. They have two main purposes:</p>
+<ul>
+<li>HTML traversal: offer an interface for programmers to easily access and modify of the "HTML string code". Canonical example: <a href="/wiki/Document_Object_Model#Libraries" title="Document Object Model">DOM parsers</a>.</li>
+<li>HTML clean: to fix invalid HTML and to improve the layout and indent style of the resulting markup. Canonical example: <a href="/wiki/HTML_Tidy" title="HTML Tidy">HTML Tidy</a>.</li>
+</ul>
+<table class="wikitable sortable" style="width: auto; font-size: smaller">
+<tr>
+<th>Parser</th>
+<th><a href="/wiki/Software_license" title="Software license">License</a></th>
+<th>Implementation language(s)</th>
+<th>Latest date*</th>
+<th>HTML parsing<sup id="cite_ref-1" class="reference"><a href="#cite_note-1">[1]</a></sup></th>
+<th>HTML5-compliant parsing</th>
+<th>Clean HTML**</th>
+<th>Update HTML***</th>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://docs.python.org/3/library/html.parser.html">html.parser</a></td>
+<td><a href="/wiki/Python_Software_Foundation_License" title="Python Software Foundation License">Python S. F. L.</a></td>
+<td><a href="/wiki/Python_(programming_language)" title="Python (programming language)">Python</a></td>
+<td>2016-06-27<sup id="cite_ref-2" class="reference"><a href="#cite_note-2">[2]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://www.nuget.org/packages/HtmlAgilityPack/">Html Agility Pack</a></td>
+<td><a href="/wiki/Microsoft_Public_License" class="mw-redirect" title="Microsoft Public License">Microsoft Public License</a></td>
+<td><a href="/wiki/C_Sharp_(programming_language)" title="C Sharp (programming language)">C#</a></td>
+<td>2016-07-14<sup id="cite_ref-3" class="reference"><a href="#cite_note-3">[3]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a></td>
+<td><a href="/wiki/Python_Software_Foundation_License" title="Python Software Foundation License">Python S. F. L.</a></td>
+<td><a href="/wiki/Python_(programming_language)" title="Python (programming language)">Python</a></td>
+<td>2016-08-02<sup id="cite_ref-4" class="reference"><a href="#cite_note-4">[4]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#FFB;vertical-align:middle;text-align:center;" class="table-partial">Partial<sup id="cite_ref-5" class="reference"><a href="#cite_note-5">[5]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://github.com/google/gumbo-parser">Gumbo</a></td>
+<td><a href="/wiki/Apache_License_2.0" class="mw-redirect" title="Apache License 2.0">Apache License 2.0</a></td>
+<td><a href="/wiki/C_(programming_language)" title="C (programming language)">C</a></td>
+<td>2015-05-01</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://github.com/servo/html5ever">html5ever</a></td>
+<td><a href="/wiki/Apache_License_2.0" class="mw-redirect" title="Apache License 2.0">Apache License 2.0</a></td>
+<td><a href="/wiki/Rust_(programming_language)" title="Rust (programming language)">Rust</a></td>
+<td>2016-02-23</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://github.com/html5lib/">html5lib</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/Python_(programming_language)" title="Python (programming language)">Python</a> (and <a href="/wiki/PHP" title="PHP">PHP</a>, six years ago)</td>
+<td>2016-07-15<sup id="cite_ref-6" class="reference"><a href="#cite_note-6">[6]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a></td>
+<td><a href="/wiki/Perl_license" class="mw-redirect" title="Perl license">Perl license</a></td>
+<td><a href="/wiki/Perl" title="Perl">Perl</a></td>
+<td>2013-03-28</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No<sup id="cite_ref-7" class="reference"><a href="#cite_note-7">[7]</a></sup></td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://htmlpurifier.org/">htmlPurifier</a></td>
+<td><a href="/wiki/GNU_Lesser_General_Public_License" title="GNU Lesser General Public License">GNU Lesser GPL</a></td>
+<td><a href="/wiki/PHP" title="PHP">PHP</a></td>
+<td>2009-03-25<sup id="cite_ref-8" class="reference"><a href="#cite_note-8">[8]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+</tr>
+<tr>
+<td><a href="/wiki/HTML_Tidy" title="HTML Tidy">HTML Tidy</a></td>
+<td><a href="/wiki/W3C_license" class="mw-redirect" title="W3C license">W3C license</a></td>
+<td><a href="/wiki/ANSI_C" title="ANSI C">ANSI C</a></td>
+<td>2015-05-24<sup id="cite_ref-9" class="reference"><a href="#cite_note-9">[9]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No<sup id="cite_ref-what_is_tidy_10-0" class="reference"><a href="#cite_note-what_is_tidy-10">[10]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes<sup id="cite_ref-what_is_tidy_10-1" class="reference"><a href="#cite_note-what_is_tidy-10">[10]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes<sup id="cite_ref-what_is_tidy_10-2" class="reference"><a href="#cite_note-what_is_tidy-10">[10]</a></sup></td>
+</tr>
+<tr>
+<td><a href="/wiki/HtmlUnit" title="HtmlUnit">HtmlUnit</a></td>
+<td><a href="/wiki/Apache_License" title="Apache License">Apache License</a> 2.0</td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2016-05-27<sup id="cite_ref-11" class="reference"><a href="#cite_note-11">[11]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://htmlcleaner.sourceforge.net/">HtmlCleaner</a></td>
+<td><a href="/wiki/BSD_License" class="mw-redirect" title="BSD License">BSD License</a><sup id="cite_ref-12" class="reference"><a href="#cite_note-12">[12]</a></sup></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2015-08-24</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://www.netsurf-browser.org/projects/hubbub/">Hubbub</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/C_(programming_language)" title="C (programming language)">C</a></td>
+<td>2016-02-16</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes<sup id="cite_ref-13" class="reference"><a href="#cite_note-13">[13]</a></sup></td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://jaunt-api.com/">Jaunt API</a></td>
+<td><a href="/w/index.php?title=Jaunt_Beta_License&amp;action=edit&amp;redlink=1" class="new" title="Jaunt Beta License (page does not exist)">Jaunt Beta License</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2013-08-01</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://jerichohtml.sourceforge.net/">Jericho HTML Parser</a></td>
+<td><a href="/wiki/Eclipse_Public_License" title="Eclipse Public License">Eclipse Public License</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2012-10-30<sup id="cite_ref-14" class="reference"><a href="#cite_note-14">[14]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No??</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://npmjs.org/package/jsdom">jsdom</a></td>
+<td><a href="/wiki/MIT_license" class="mw-redirect" title="MIT license">MIT license</a></td>
+<td><a href="/wiki/JavaScript" title="JavaScript">JavaScript</a></td>
+<td>2013-07-21</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://jsoup.org/">jsoup</a></td>
+<td><a href="/wiki/MIT_license" class="mw-redirect" title="MIT license">MIT license</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2016-10-23<sup id="cite_ref-15" class="reference"><a href="#cite_note-15">[15]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes<sup id="cite_ref-16" class="reference"><a href="#cite_note-16">[16]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://jtidy.sourceforge.net/">JTidy</a></td>
+<td><a rel="nofollow" class="external text" href="http://jtidy.sourceforge.net/license.html">JTidy License</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2012-10-09<sup id="cite_ref-17" class="reference"><a href="#cite_note-17">[17]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a href="/wiki/Libxml2" title="Libxml2">libxml2</a> <a rel="nofollow" class="external text" href="http://www.xmlsoft.org/html/libxml-HTMLparser.html">HTMLparser</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/C_(programming_language)" title="C (programming language)">C</a></td>
+<td>2012-09-11<sup id="cite_ref-18" class="reference"><a href="#cite_note-18">[18]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://nekohtml.sourceforge.net/">NekoHTML</a></td>
+<td><a href="/wiki/Apache_License_2.0" class="mw-redirect" title="Apache License 2.0">Apache License 2.0</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2014-06-02<sup id="cite_ref-19" class="reference"><a href="#cite_note-19">[19]</a></sup></td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://ccil.org/~cowan/XML/tagsoup/">TagSoup</a></td>
+<td><a href="/wiki/Apache_License_2.0" class="mw-redirect" title="Apache License 2.0">Apache License 2.0</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2011-07-07</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://about.validator.nu/htmlparser/">Validator.nu HTML Parser</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/Java_(programming_language)" title="Java (programming language)">Java</a></td>
+<td>2012-06-05</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://simplehtmldom.sourceforge.net/">PHP Simple HTML DOM Parser</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/PHP" title="PHP">PHP</a></td>
+<td>2014-08-28</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td>The <a href="/wiki/PHP" title="PHP">PHP</a> <a rel="nofollow" class="external text" href="http://php.net/manual/en/class.domdocument.php">DOMDocument</a>-<a href="/wiki/Class_(computer_programming)" title="Class (computer programming)">class</a></td>
+<td><a href="/wiki/PHP_License" title="PHP License">PHP License</a></td>
+<td><a href="/wiki/PHP" title="PHP">PHP</a></td>
+<td>2014-10-04</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="http://www.nokogiri.org/">Nokogiri</a></td>
+<td><a href="/wiki/MIT_License" title="MIT License">MIT License</a></td>
+<td><a href="/wiki/Ruby_(programming_language)" title="Ruby (programming language)">Ruby</a></td>
+<td>2016-10-03<sup id="cite_ref-20" class="reference"><a href="#cite_note-20">[20]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://www.github.com/avplayer/avhtml">AVHTML</a></td>
+<td><a href="/wiki/GNU_Affero_General_Public_License" title="GNU Affero General Public License">AGPL</a></td>
+<td><a href="/wiki/C%2B%2B" title="C++">C++</a></td>
+<td>2015-08-27<sup id="cite_ref-21" class="reference"><a href="#cite_note-21">[21]</a></sup></td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+</tr>
+<tr>
+<td><a rel="nofollow" class="external text" href="https://github.com/ucotta/BrilliantHTML5Parser">BrilliantHTML5Parser</a></td>
+<td><a href="/wiki/Apache_License_2.0" class="mw-redirect" title="Apache License 2.0">Apache License 2.0</a></td>
+<td><a href="/wiki/Swift_(programming_language)" title="Swift (programming language)">Swift 3</a></td>
+<td>2016-11-10</td>
+<td style="background:#9F9;vertical-align:middle;text-align:center;" class="table-yes">Yes</td>
+<td style="background: #ececec; color: #2C2C2C; font-size: smaller; vertical-align: middle; text-align: center;" class="unknown table-unknown">?</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+<td style="background:#F99;vertical-align:middle;text-align:center;" class="table-no">No</td>
+</tr>
+<tr class="sortbottom">
+<th>Parser</th>
+<th><a href="/wiki/Software_license" title="Software license">License</a></th>
+<th>Implementation language(s)</th>
+<th>Latest date*</th>
+<th>HTML Parsing</th>
+<th>HTML5-compliant Parsing</th>
+<th>Clean HTML**</th>
+<th>Update HTML***</th>
+</tr>
+</table>
+<dl>
+<dd>* Latest release (of significant changes) date.</dd>
+<dd>** <i>sanitize</i> (generating standard-compatible web-page, reduce spam, etc.) and <i>clean</i> (strip out surplus presentational tags, remove XSS code, etc.) HTML code.</dd>
+<dd>*** Updates HTML4.X to XHTML or to HTML5, converting deprecated tags (ex. CENTER) to valid ones (ex. DIV with <tt>style="text-align:center;"</tt>).</dd>
+</dl>
+<h2><span class="mw-headline" id="References">References</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit&amp;section=1" title="Edit section: References">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<div class="reflist" style="list-style-type: decimal;">
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><b><a href="#cite_ref-1">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html">12.2 Parsing HTML documents — HTML Standard</a></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><b><a href="#cite_ref-2">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://www.python.org/downloads/release/python-352/">Python 3.5.2</a></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><b><a href="#cite_ref-3">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.nuget.org/packages/HtmlAgilityPack/1.4.9.5">Nuget Html AgilityPack</a></span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><b><a href="#cite_ref-4">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://www.crummy.com/software/BeautifulSoup/bs4/download/4.5/">Beautiful Soup 4.5.1</a></span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><b><a href="#cite_ref-5">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-a-parser">via html5lib</a></span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><b><a href="#cite_ref-6">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://github.com/html5lib/html5lib-python/releases">Releases · html5lib/html5lib-python</a></span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><b><a href="#cite_ref-7">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://rt.cpan.org/Public/Bug/Display.html?id=53300">Bug #53300 for HTML-Parser: HTML 5</a></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><b><a href="#cite_ref-8">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.paehl.com/open_source/?HTML_Tidy_for_Windows">HTML Tidy for Windows</a></span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><b><a href="#cite_ref-9">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://github.com/htacg/tidy-html5/releases/tag/4.9.30">HTML Tidy release 4.9.30</a></span></li>
+<li id="cite_note-what_is_tidy-10"><span class="mw-cite-backlink">^ <a href="#cite_ref-what_is_tidy_10-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-what_is_tidy_10-1"><sup><i><b>b</b></i></sup></a> <a href="#cite_ref-what_is_tidy_10-2"><sup><i><b>c</b></i></sup></a></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://www.html-tidy.org/#what_is_tidy">What is Tidy?</a></span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><b><a href="#cite_ref-11">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://htmlunit.sourceforge.net/changes-report.html#a2.22">HtmlUnit Release 2.22 Changes</a></span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><b><a href="#cite_ref-12">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://htmlcleaner.sourceforge.net/license.php">HtmlCleaner is distributed under BSD License</a></span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><b><a href="#cite_ref-13">^</a></b></span> <span class="reference-text">according to project's home page</span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><b><a href="#cite_ref-14">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://sourceforge.net/projects/jerichohtml/files/jericho-html/3.3/">Jericho HTML Parser - Browse /jericho-html/3.3 at SourceForge.net</a></span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><b><a href="#cite_ref-15">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://jsoup.org/news/release-1.10.1">jsoup release 1.10.1</a></span></li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><b><a href="#cite_ref-16">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external free" href="https://jsoup.org/">https://jsoup.org/</a> Per project homepage</span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><b><a href="#cite_ref-17">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://sourceforge.net/projects/jtidy/files/JTidy/">JTidy - Browse /JTidy at SourceForge.net</a></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><b><a href="#cite_ref-18">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://xmlsoft.org/news.html">libxml2 Releases</a></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><b><a href="#cite_ref-19">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="http://nekohtml.sourceforge.net/changes.html">NekoHTML | Change History</a></span></li>
+<li id="cite_note-20"><span class="mw-cite-backlink"><b><a href="#cite_ref-20">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://github.com/sparklemotion/nokogiri/releases/tag/v1.6.8.1">Nokogiri release 1.6.8.1</a></span></li>
+<li id="cite_note-21"><span class="mw-cite-backlink"><b><a href="#cite_ref-21">^</a></b></span> <span class="reference-text"><a rel="nofollow" class="external text" href="https://github.com/avplayer/avhtml/commit/8c0d99f1a519211c532438235162f7cebd363b3d">Latest commit 8c0d99f on 27 Aug 2015</a></span></li>
+</ol>
+</div>
+
+
+<!-- Saved in parser cache with key enwiki:pcache:idhash:36625178-0!*!0!*!*!4!* and timestamp 20161110190143 and revision id 748846956
+ -->
+<noscript><img src="//en.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1" alt="" title="" width="1" height="1" style="border: none; position: absolute;" /></noscript></div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://en.wikipedia.org/w/index.php?title=Comparison_of_HTML_parsers&amp;oldid=748846956">https://en.wikipedia.org/w/index.php?title=Comparison_of_HTML_parsers&amp;oldid=748846956</a>"					</div>
+				<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Help:Category" title="Help:Category">Categories</a>: <ul><li><a href="/wiki/Category:HTML_parsers" title="Category:HTML parsers">HTML parsers</a></li><li><a href="/wiki/Category:Software_comparisons" title="Category:Software comparisons">Software comparisons</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">Hidden categories: <ul><li><a href="/wiki/Category:Articles_needing_additional_references_from_May_2015" title="Category:Articles needing additional references from May 2015">Articles needing additional references from May 2015</a></li><li><a href="/wiki/Category:All_articles_needing_additional_references" title="Category:All articles needing additional references">All articles needing additional references</a></li><li><a href="/wiki/Category:Articles_that_may_contain_original_research_from_May_2015" title="Category:Articles that may contain original research from May 2015">Articles that may contain original research from May 2015</a></li><li><a href="/wiki/Category:All_articles_that_may_contain_original_research" title="Category:All articles that may contain original research">All articles that may contain original research</a></li></ul></div></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-anonuserpage">Not logged in</li><li id="pt-anontalk"><a href="/wiki/Special:MyTalk" title="Discussion about edits from this IP address [n]" accesskey="n">Talk</a></li><li id="pt-anoncontribs"><a href="/wiki/Special:MyContributions" title="A list of edits made from this IP address [y]" accesskey="y">Contributions</a></li><li id="pt-createaccount"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=Comparison+of+HTML+parsers" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Comparison+of+HTML+parsers" title="You're encouraged to log in; however, it's not mandatory. [o]" accesskey="o">Log in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+															<li  id="ca-nstab-main" class="selected"><span><a href="/wiki/Comparison_of_HTML_parsers"  title="View the content page [c]" accesskey="c">Article</a></span></li>
+															<li  id="ca-talk"><span><a href="/wiki/Talk:Comparison_of_HTML_parsers"  title="Discussion about the content page [t]" accesskey="t" rel="discussion">Talk</a></span></li>
+													</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<h3 id="p-variants-label">
+							<span>Variants</span><a href="#"></a>
+						</h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+															<li id="ca-view" class="selected"><span><a href="/wiki/Comparison_of_HTML_parsers" >Read</a></span></li>
+															<li id="ca-edit"><span><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=edit"  title="Edit this page [e]" accesskey="e">Edit</a></span></li>
+															<li id="ca-history" class="collapsible"><span><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=history"  title="Past revisions of this page [h]" accesskey="h">View history</a></span></li>
+													</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label">
+						<h3 id="p-cactions-label"><span>More</span><a href="#"></a></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+
+						<form action="/w/index.php" id="searchform">
+							<div id="simpleSearch">
+							<input type="search" name="search" placeholder="Search Wikipedia" title="Search Wikipedia [f]" accesskey="f" id="searchInput"/><input type="hidden" value="Special:Search" name="title"/><input type="submit" name="fulltext" value="Search" title="Search Wikipedia for this text" id="mw-searchButton" class="searchButton mw-fallbackSearchButton"/><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton"/>							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="/wiki/Main_Page"  title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id='p-navigation' aria-labelledby='p-navigation-label'>
+			<h3 id='p-navigation-label'>Navigation</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li><li id="n-contents"><a href="/wiki/Portal:Contents" title="Guides to browsing Wikipedia">Contents</a></li><li id="n-featuredcontent"><a href="/wiki/Portal:Featured_content" title="Featured content – the best of Wikipedia">Featured content</a></li><li id="n-currentevents"><a href="/wiki/Portal:Current_events" title="Find background information on current events">Current events</a></li><li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random article [x]" accesskey="x">Random article</a></li><li id="n-sitesupport"><a href="https://donate.wikimedia.org/wiki/Special:FundraiserRedirector?utm_source=donate&amp;utm_medium=sidebar&amp;utm_campaign=C13_en.wikipedia.org&amp;uselang=en" title="Support us">Donate to Wikipedia</a></li><li id="n-shoplink"><a href="//shop.wikimedia.org" title="Visit the Wikipedia store">Wikipedia store</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-interaction' aria-labelledby='p-interaction-label'>
+			<h3 id='p-interaction-label'>Interaction</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-help"><a href="/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia">Help</a></li><li id="n-aboutsite"><a href="/wiki/Wikipedia:About" title="Find out about Wikipedia">About Wikipedia</a></li><li id="n-portal"><a href="/wiki/Wikipedia:Community_portal" title="About the project, what you can do, where to find things">Community portal</a></li><li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li><li id="n-contactpage"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia">Contact page</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-tb' aria-labelledby='p-tb-label'>
+			<h3 id='p-tb-label'>Tools</h3>
+
+			<div class="body">
+									<ul>
+						<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Comparison_of_HTML_parsers" title="List of all English Wikipedia pages containing links to this page [j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Comparison_of_HTML_parsers" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li><li id="t-upload"><a href="/wiki/Wikipedia:File_Upload_Wizard" title="Upload files [u]" accesskey="u">Upload file</a></li><li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li><li id="t-permalink"><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;oldid=748846956" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;action=info" title="More information about this page">Page information</a></li><li id="t-wikibase"><a href="https://www.wikidata.org/wiki/Q5155729" title="Link to connected data repository item [g]" accesskey="g">Wikidata item</a></li><li id="t-cite"><a href="/w/index.php?title=Special:CiteThisPage&amp;page=Comparison_of_HTML_parsers&amp;id=748846956" title="Information on how to cite this page">Cite this page</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-coll-print_export' aria-labelledby='p-coll-print_export-label'>
+			<h3 id='p-coll-print_export-label'>Print/export</h3>
+
+			<div class="body">
+									<ul>
+						<li id="coll-create_a_book"><a href="/w/index.php?title=Special:Book&amp;bookcmd=book_creator&amp;referer=Comparison+of+HTML+parsers">Create a book</a></li><li id="coll-download-as-rdf2latex"><a href="/w/index.php?title=Special:Book&amp;bookcmd=render_article&amp;arttitle=Comparison+of+HTML+parsers&amp;returnto=Comparison+of+HTML+parsers&amp;oldid=748846956&amp;writer=rdf2latex">Download as PDF</a></li><li id="t-print"><a href="/w/index.php?title=Comparison_of_HTML_parsers&amp;printable=yes" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id='p-lang' aria-labelledby='p-lang-label'>
+			<h3 id='p-lang-label'>Languages</h3>
+
+			<div class="body">
+									<ul>
+						<li class="interlanguage-link interwiki-zh"><a href="https://zh.wikipedia.org/wiki/HTML%E8%A7%A3%E6%9E%90%E5%99%A8%E5%AF%B9%E6%AF%94" title="HTML解析器对比 – Chinese" lang="zh" hreflang="zh" class="interlanguage-link-target">中文</a></li><li class="uls-p-lang-dummy"><a href="#"></a></li>					</ul>
+				<div class='after-portlet after-portlet-lang'><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Q5155729#sitelinks-wikipedia" title="Edit interlanguage links" class="wbc-editpage">Edit links</a></span></div>			</div>
+		</div>
+				</div>
+		</div>
+		<div id="footer" role="contentinfo">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 10 November 2016, at 19:01.</li>
+											<li id="footer-info-copyright">Text is available under the <a rel="license" href="//en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution-ShareAlike License</a><a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/" style="display:none;"></a>;
+additional terms may apply.  By using this site, you agree to the <a href="//wikimediafoundation.org/wiki/Terms_of_Use">Terms of Use</a> and <a href="//wikimediafoundation.org/wiki/Privacy_policy">Privacy Policy</a>. Wikipedia® is a registered trademark of the <a href="//www.wikimediafoundation.org/">Wikimedia Foundation, Inc.</a>, a non-profit organization.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="https://wikimediafoundation.org/wiki/Privacy_policy" class="extiw" title="wmf:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="/wiki/Wikipedia:About" title="Wikipedia:About">About Wikipedia</a></li>
+											<li id="footer-places-disclaimer"><a href="/wiki/Wikipedia:General_disclaimer" title="Wikipedia:General disclaimer">Disclaimers</a></li>
+											<li id="footer-places-contact"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
+											<li id="footer-places-developers"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute">Developers</a></li>
+											<li id="footer-places-cookiestatement"><a href="https://wikimediafoundation.org/wiki/Cookie_statement">Cookie statement</a></li>
+											<li id="footer-places-mobileview"><a href="//en.m.wikipedia.org/w/index.php?title=Comparison_of_HTML_parsers&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+											<li id="footer-copyrightico">
+							<a href="https://wikimediafoundation.org/"><img src="/static/images/wikimedia-button.png" srcset="/static/images/wikimedia-button-1.5x.png 1.5x, /static/images/wikimedia-button-2x.png 2x" width="88" height="31" alt="Wikimedia Foundation"/></a>						</li>
+											<li id="footer-poweredbyico">
+							<a href="//www.mediawiki.org/"><img src="/static/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/static/images/poweredby_mediawiki_132x47.png 1.5x, /static/images/poweredby_mediawiki_176x62.png 2x" width="88" height="31"/></a>						</li>
+									</ul>
+						<div style="clear:both"></div>
+		</div>
+		<script>(window.RLQ=window.RLQ||[]).push(function(){mw.loader.load(["ext.cite.a11y","mediawiki.action.view.postEdit","site","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest","ext.gadget.teahouse","ext.gadget.ReferenceTooltips","ext.gadget.watchlist-notice","ext.gadget.DRN-wizard","ext.gadget.charinsert","ext.gadget.refToolbar","ext.gadget.extra-toolbar-buttons","ext.gadget.switcher","ext.gadget.featured-articles-links","mmv.bootstrap.autostart","ext.visualEditor.targetLoader","ext.eventLogging.subscriber","ext.wikimediaEvents","ext.navigationTiming","ext.uls.eventlogger","ext.uls.init","ext.centralNotice.geoIP","ext.centralNotice.startUp"]);});</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set( {
+    "wgPageParseReport": {
+        "limitreport": {
+            "cputime": "0.076",
+            "walltime": "0.100",
+            "ppvisitednodes": {
+                "value": 770,
+                "limit": 1000000
+            },
+            "ppgeneratednodes": {
+                "value": 0,
+                "limit": 1500000
+            },
+            "postexpandincludesize": {
+                "value": 19239,
+                "limit": 2097152
+            },
+            "templateargumentsize": {
+                "value": 17,
+                "limit": 2097152
+            },
+            "expansiondepth": {
+                "value": 6,
+                "limit": 40
+            },
+            "expensivefunctioncount": {
+                "value": 2,
+                "limit": 500
+            },
+            "entityaccesscount": {
+                "value": 0,
+                "limit": 400
+            },
+            "timingprofile": [
+                "100.00%   69.547      1 -total",
+                " 49.59%   34.490      1 Template:Refimprove",
+                " 34.38%   23.913      2 Template:Ambox",
+                " 13.00%    9.040      1 Template:Reflist",
+                "  6.59%    4.584      1 Template:Original_research",
+                "  3.22%    2.238     37 Template:Dunno",
+                "  2.01%    1.396     37 Template:Yes",
+                "  1.66%    1.156     29 Template:No",
+                "  1.50%    1.041      1 Template:Partial",
+                "  1.35%    0.937      1 Template:Unknown"
+            ]
+        },
+        "scribunto": {
+            "limitreport-timeusage": {
+                "value": "0.016",
+                "limit": "10.000"
+            },
+            "limitreport-memusage": {
+                "value": 915065,
+                "limit": 52428800
+            }
+        },
+        "cachereport": {
+            "origin": "mw1283",
+            "timestamp": "20161110190114",
+            "ttl": 2592000,
+            "transientcontent": false
+        }
+    }
+} );});</script><script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":50,"wgHostname":"mw1210"});});</script>
+	</body>
+</html>
