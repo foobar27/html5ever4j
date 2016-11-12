@@ -8,8 +8,8 @@ name = "html5ever4j"
 crate-type = ["dylib"]
 
 [dependencies]
-html5ever = "*"
-html5ever-atoms = "*"
+html5ever = "0.10.1"
+html5ever-atoms = "0.1.1" # TODO should be 0.1.2, but then it's not compatible with servo
 string_cache = "*"
 tendril = "*"
 
